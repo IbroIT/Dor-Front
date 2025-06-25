@@ -6,6 +6,7 @@ import Button from "./Button";
 const Hero = ({ src }) => {
   const sectionRef = useRef();
   const videoRef = useRef();
+  const particlesRef = useRef();
   const { scrollYProgress } = useViewportScroll();
   const [isMuted, setIsMuted] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
@@ -16,6 +17,40 @@ const Hero = ({ src }) => {
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
+
+  // Создаем частицы для фона
+  useEffect(() => {
+    if (isMobile || !particlesRef.current) return;
+
+    const particlesContainer = particlesRef.current;
+    const particleCount = 30;
+    
+    for (let i = 0; i < particleCount; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'absolute rounded-full bg-blue-400/20';
+      
+      // Случайные параметры частиц
+      const size = Math.random() * 6 + 2;
+      const posX = Math.random() * 100;
+      const posY = Math.random() * 100;
+      const delay = Math.random() * 5;
+      const duration = Math.random() * 10 + 10;
+      
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      particle.style.left = `${posX}%`;
+      particle.style.top = `${posY}%`;
+      
+      // Анимация частиц
+      particle.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
+      
+      particlesContainer.appendChild(particle);
+    }
+
+    return () => {
+      particlesContainer.innerHTML = '';
+    };
+  }, [isMobile]);
 
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0.8]);
@@ -54,6 +89,79 @@ const Hero = ({ src }) => {
       className="relative flex h-[90vh] w-full items-center justify-center overflow-hidden px-6 sm:px-10 md:px-16 lg:px-20"
       style={!isMobile ? { scale, opacity } : {}}
     >
+      {/* Фоновые элементы */}
+      {!isMobile && (
+        <>
+          {/* Частицы */}
+          <div 
+            ref={particlesRef} 
+            className="absolute inset-0 overflow-hidden pointer-events-none"
+          />
+          
+          {/* Градиентные волны */}
+          <div className="absolute inset-0 overflow-hidden opacity-30">
+            <motion.div 
+              className="absolute -bottom-1/4 -left-1/4 w-[150%] h-[150%] bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-full"
+              animate={{
+                rotate: [0, 360],
+              }}
+              transition={{
+                duration: 120,
+                repeat: Infinity,
+                ease: "linear"
+              }}
+            />
+            <motion.div 
+              className="absolute -bottom-1/3 -right-1/3 w-[150%] h-[150%] bg-gradient-to-r from-blue-600/10 to-indigo-600/10 rounded-full"
+              animate={{
+                rotate: [360, 0],
+              }}
+              transition={{
+                duration: 150,
+                repeat: Infinity,
+                ease: "linear"
+              }}
+            />
+          </div>
+          
+          {/* Мерцающие звезды */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            {[...Array(20)].map((_, i) => {
+              const size = Math.random() * 3 + 1;
+              const posX = Math.random() * 100;
+              const posY = Math.random() * 100;
+              const delay = Math.random() * 5;
+              const duration = Math.random() * 3 + 2;
+              
+              return (
+                <motion.div
+                  key={i}
+                  className="absolute rounded-full bg-white"
+                  style={{
+                    width: `${size}px`,
+                    height: `${size}px`,
+                    left: `${posX}%`,
+                    top: `${posY}%`,
+                    boxShadow: '0 0 10px 2px rgba(255, 255, 255, 0.8)'
+                  }}
+                  animate={{
+                    opacity: [0.2, 1, 0.2],
+                  }}
+                  transition={{
+                    duration: duration,
+                    delay: delay,
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                    ease: "easeInOut"
+                  }}
+                />
+              );
+            })}
+          </div>
+        </>
+      )}
+      
+      {/* Основное содержимое */}
       <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between">
         <AnimatedDiv
           className="py-10 md:py-20 lg:w-2/5"
@@ -152,6 +260,23 @@ const Hero = ({ src }) => {
           </motion.div>
         </motion.div>
       )}
+      
+      {/* Добавляем CSS для анимации частиц прямо в компонент */}
+      <style jsx>{`
+        @keyframes float {
+          0% {
+            transform: translateY(0) translateX(0) rotate(0deg);
+            opacity: 0.2;
+          }
+          50% {
+            opacity: 0.8;
+          }
+          100% {
+            transform: translateY(-100vh) translateX(20px) rotate(360deg);
+            opacity: 0.2;
+          }
+        }
+      `}</style>
     </Section>
   );
 };
