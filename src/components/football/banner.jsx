@@ -1,28 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import banner1 from './assets/banner1.jpg';
-import banner2 from './assets/banner2.png' // Adjust the import path as necessary
-import banner3 from './assets/banner3.png' // Adjust the import path as necessary
 
 const Banner = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Static banner data
-  const banner = [
-    {
-      image: banner1, // Replace with your actual image path
-      title: 'Расторжение контракта с Лукой'
-    },
-    {
-      image: banner2,
-      title: 'Матч 11 тура КПЛ: Мурас Юнайтед - ФК Дордой' // Replace with your actual image path
-        },
-    {
-      image: banner3,
-      title: 'Дордой победил Илбирс в Матче 10 тура КПЛ: Илбирс - ФК Дордой' // Replace with your actual image path
-        }
-    // Add more banners as needed
-  ];
+ const banner = [
+
+  {
+    image: 'https://cdn-1.aki.kg/cdn-st-0/qgH/1/3154690.b93c5d2ca14ad9a7f9be4972a4bbe069.jpg',
+    title: 'Суперкубок Кыргызстана 2018'
+  },
+ 
+];
 
   useEffect(() => {
     if (banner.length > 0) {
@@ -54,9 +44,9 @@ const Banner = () => {
                 transition={{ duration: 1.2, ease: 'easeOut' }}
               >
                 <img
-                  src={banner[currentIndex]?.image}
+                  src={banner[currentIndex]?.image} 
                   alt={banner[currentIndex]?.title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-center "
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-900/80 via-blue-900/40 to-yellow-500/30"></div>
               </motion.div>
