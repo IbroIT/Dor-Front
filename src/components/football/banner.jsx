@@ -1,18 +1,47 @@
 import  { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import banner1 from './assets/banner1.jpg'
+import banner2 from './assets/banner2.png'
+import banner3 from './assets/banner3.png'
+import banner1Mobile from './assets/banner1Mobile.jpg'
+import banner2Mobile from './assets/banner2Mobile.jpg'
+import banner3Mobile from './assets/banner3Mobile.jpg'
+
 
 const Banner = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Static banner data
- const banner = [
+  const banner = [
+    {
+      imageDesktop: banner1,
+      imageMobile: banner1Mobile, // замените на адаптированное под мобилки изображение
+      title: 'Расторжение контракта с Лукой',
+    },
+    {
+      imageDesktop: banner2,
+      imageMobile: banner2Mobile, // замените на адаптированное под мобилки изображение
+      title: 'матч Мурас Юнайтед - Дордой',
+    },
+    {
+      imageDesktop: banner3,
+      imageMobile: banner3Mobile, // замените на адаптированное под мобилки изображение
+      title: 'Дордой одержал победу над Илбирс',
+    },
+  ];
 
-  {
-    image: 'https://cdn-1.aki.kg/cdn-st-0/qgH/1/3154690.b93c5d2ca14ad9a7f9be4972a4bbe069.jpg',
-    title: 'Суперкубок Кыргызстана 2018'
-  },
- 
-];
+   const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+      const checkMobile = () => {
+        setIsMobile(window.innerWidth <= 768);
+      };
+
+      checkMobile();
+      window.addEventListener('resize', checkMobile);
+      return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
 
   useEffect(() => {
     if (banner.length > 0) {
@@ -43,11 +72,12 @@ const Banner = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 1.2, ease: 'easeOut' }}
               >
-                <img
-                  src={banner[currentIndex]?.image} 
-                  alt={banner[currentIndex]?.title}
-                  className="w-full h-full object-center "
-                />
+                              <img
+                src={isMobile ? currentSlide.imageMobile : currentSlide.imageDesktop}
+                alt={currentSlide.title}
+                className="w-full h-full object-cover"  
+              />
+
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-900/80 via-blue-900/40 to-yellow-500/30"></div>
               </motion.div>
 
