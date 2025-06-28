@@ -1,112 +1,141 @@
-import  { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import banner1 from './assets/banner1.jpg'
-import banner2 from './assets/banner2.png'
-import banner3 from './assets/banner3.png'
-import banner1Mobile from './assets/banner1Mobile.jpg'
-import banner2Mobile from './assets/banner2Mobile.jpg'
-import banner3Mobile from './assets/banner3Mobile.jpg'
+import { useEffect, useRef, useState } from 'react';
+import { gsap } from 'gsap';
+import {banners} from './const.js'
+import {FaArrowLeft, FaArrowRight} from 'react-icons/fa';
 
+// Define banners outside the component for static data
 
-const Banner = () => {
+const Banner = ({ slideInterval = 5000 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
 
-  // Static banner data
-  const banner = [
-    {
-      imageDesktop: banner1,
-      imageMobile: banner1Mobile, // замените на адаптированное под мобилки изображение
-      title: 'Расторжение контракта с Лукой',
-    },
-    {
-      imageDesktop: banner2,
-      imageMobile: banner2Mobile, // замените на адаптированное под мобилки изображение
-      title: 'матч Мурас Юнайтед - Дордой',
-    },
-    {
-      imageDesktop: banner3,
-      imageMobile: banner3Mobile, // замените на адаптированное под мобилки изображение
-      title: 'Дордой одержал победу над Илбирс',
-    },
-  ];
+  const imageRef = useRef(null);
+  const titleRef = useRef(null);
+  const intervalRef = useRef(null);
 
-   const [isMobile, setIsMobile] = useState(false);
-
-    useEffect(() => {
-      const checkMobile = () => {
-        setIsMobile(window.innerWidth <= 768);
-      };
-
-      checkMobile();
-      window.addEventListener('resize', checkMobile);
-      return () => window.removeEventListener('resize', checkMobile);
-    }, []);
-
-
+  // Handle window resize for mobile detection
   useEffect(() => {
-    if (banner.length > 0) {
-      const interval = setInterval(() => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % banner.length);
-      }, 5000);
-  
-      return () => clearInterval(interval);
-    }
-  }, [banner.length]);
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
-  const currentSlide = banner.length > 0 ? banner[currentIndex] : null;
+  // Auto-slide functionality with pause/resume
+  useEffect(() => {
+    if (!isPaused) {
+      intervalRef.current = setInterval(() => {
+        setCurrentIndex((prev) => (prev + 1) % banners.length);
+      }, slideInterval);
+    }
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [isPaused, slideInterval]);
+
+  // GSAP animations with cleanup
+  useEffect(() => {
+    const tl = gsap.timeline();
+
+    if (imageRef.current && titleRef.current) {
+      tl.fromTo(
+        imageRef.current,
+        { opacity: 0, scale: 1.1 },
+        { opacity: 1, scale: 1, duration: 1.2, ease: 'power2.out' }
+      ).fromTo(
+        titleRef.current,
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' },
+        '<0.2'
+      );
+    }
+
+    return () => {
+      tl.kill(); // Clean up GSAP timeline
+    };
+  }, [currentIndex]);
+
+  // Navigation handlers
+  const handleNext = () => {
+    setCurrentIndex((prev) => (prev + 1) % banners.length);
+  };
+
+  const handlePrev = () => {
+    setCurrentIndex((prev) => (prev - 1 + banners.length) % banners.length);
+  };
+
+  const handleDotClick = (index) => {
+    setCurrentIndex(index);
+  };
+
+  // Pause/resume on hover
+  const handleMouseEnter = () => setIsPaused(true);
+  const handleMouseLeave = () => setIsPaused(false);
+
+  const currentSlide = banners[currentIndex];
 
   return (
-    <div className="">
-      <section className="relative w-full max-h-[80vh] overflow-hidden">
-        <div className="">
-          {banner.length === 0 ? (
-            <div className="flex justify-center items-center h-[80vh] text-white text-xl">
-              No banners available
-            </div>
-          ) : (
-            <>
-              <motion.div
-                className="absolute inset-0 z-0"
-                key={currentIndex}
-                initial={{ opacity: 0, scale: 1.1 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1.2, ease: 'easeOut' }}
-              >
-                              <img
-                src={isMobile ? currentSlide.imageMobile : currentSlide.imageDesktop}
-                alt={currentSlide.title}
-                className="w-full h-full object-cover"  
-              />
+    <section
+      className="relative w-full h-[80vh] overflow-hidden bg-black"
+      aria-label={`Banner: ${currentSlide.title}`}
+      role="region"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <div className="absolute inset-0 z-0" ref={imageRef}>
+        <img
+          src={isMobile ? currentSlide.imageMobile : currentSlide.imageDesktop}
+          alt={currentSlide.title}
+          loading={currentIndex === 0 ? 'eager' : 'lazy'}
+          onError={(e) => (e.currentTarget.src = '/path/to/fallback-image.webp')}
+          className="w-full h-full object-cover"
+          decoding="async"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-900/80 via-blue-900/40 to-yellow-500/30" />
+      </div>
 
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-900/80 via-blue-900/40 to-yellow-500/30"></div>
-              </motion.div>
+      <div
+        ref={titleRef}
+        className="absolute bottom-0 left-0 w-full z-10 flex flex-col items-center justify-end h-full text-center pb-14 px-4 md:px-8"
+      >
+        <h2 className="text-2xl md:text-4xl font-extrabold text-yellow-400 drop-shadow-lg bg-black/60 rounded-lg px-4 py-2 mb-0 max-w-3xl mx-auto">
+          {currentSlide.title}
+        </h2>
+      </div>
 
-              <motion.div
-                className="relative z-10 flex flex-col items-center justify-center h-[80vh] text-center px-4 md:px-8"
-                key={banner[currentIndex]?.title}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
-              >
-               
-              </motion.div>
+      {/* Navigation Controls */}
+      <div className="absolute bottom-4 left-4 z-20 flex gap-2">
+        <button
+          onClick={handlePrev}
+          className="bg-yellow-400 text-black px-4 py-2 rounded hover:bg-yellow-500 transition"
+          aria-label="Previous slide"
+        >
+          <FaArrowLeft/>
+        </button>
+        <button
+          onClick={handleNext}
+          className="bg-yellow-400 text-black px-4 py-2 rounded hover:bg-yellow-500 transition"
+          aria-label="Next slide"
+        >
+          <FaArrowRight/>
+        </button>
+      </div>
 
-              <motion.div
-                className="absolute bottom-0 left-0 w-full z-10 flex flex-col items-center justify-end h-full text-center pb-14 px-4 md:px-8 pb-14A"
-                key={banner[currentIndex]?.title}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
-              >
-                <h2 className="text-2xl md:text-4xl font-extrabold text-yellow-400 drop-shadow-lg bg-black/60 rounded-lg px-4 py-2 mb-0 max-w-3xl mx-auto">
-                  {banner[currentIndex]?.title}
-                </h2>
-              </motion.div>
-            </>
-          )}
-        </div>
-      </section>
-    </div>   
+      {/* Dot Indicators */}
+      <div className="absolute bottom-4 right-4 z-20 flex gap-2">
+        {banners.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => handleDotClick(index)}
+            className={`w-3 h-3 rounded-full ${
+              currentIndex === index ? 'bg-yellow-400' : 'bg-white/50'
+            } hover:bg-yellow-300 transition`}
+            aria-label={`Go to slide ${index + 1}`}
+          />
+        ))}
+      </div>
+    </section>
   );
 };
 
