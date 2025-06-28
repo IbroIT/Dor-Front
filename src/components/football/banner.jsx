@@ -50,10 +50,6 @@ const Banner = ({ slideInterval = 5000 }) => {
         '<0.2'
       );
     }
-
-    return () => {
-      tl.kill(); // Clean up GSAP timeline
-    };
   }, [currentIndex]);
 
   // Navigation handlers
