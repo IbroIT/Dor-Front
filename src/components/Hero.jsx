@@ -121,7 +121,7 @@ const Hero = ({ src, poster }) => {
               muted={isMuted}
               playsInline
               poster={poster}
-              preload="metadata"
+              preload="auto"
               className="w-full rounded-3xl border-4 border-blue-300/40 shadow-[0_0_60px_rgba(59,130,246,0.5)]"
               onLoadedData={() => setIsVideoLoaded(true)}
             >

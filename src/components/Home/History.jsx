@@ -10,12 +10,11 @@ const EpicDordoyTimeline = () => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
     };
-    handleResize(); // запуск при монтировании
+    handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-
-  const eras = [
+const eras = [
     {
       year: "1995-2001",
       title: "Рождение",
@@ -66,10 +65,45 @@ const EpicDordoyTimeline = () => {
     }
   ];
 
+  // Оптимизированные анимации для модального окна
+  const modalAnimations = isMobile 
+    ? {
+        initial: { opacity: 0 },
+        animate: { opacity: 1 },
+        exit: { opacity: 0 },
+        transition: { duration: 0.2 }
+      }
+    : {
+        initial: { opacity: 0 },
+        animate: { opacity: 1 },
+        exit: { opacity: 0 },
+        transition: { duration: 0.3 }
+      };
+
+  const modalContentAnimations = isMobile
+    ? {
+        initial: { scale: 1, opacity: 0 },
+        animate: { scale: 1, opacity: 1 },
+        exit: { scale: 1, opacity: 0 },
+        transition: { duration: 0.2 }
+      }
+    : {
+        initial: { scale: 0.9, opacity: 0 },
+        animate: { scale: 1, opacity: 1 },
+        exit: { scale: 0.9, opacity: 0 },
+        transition: { type: "spring", damping: 25 }
+      };
+
   return (
     <div className="relative bg-gray-900 min-h-screen overflow-hidden">
       <div className="relative z-10 container mx-auto px-4 py-20">
-        {!isMobile && (
+        {/* Заголовок - без анимации на мобильных */}
+        {isMobile ? (
+          <div className="text-center mb-20">
+            <h1 className="text-4xl font-bold text-white mb-4">История Дордой</h1>
+            <p className="text-base text-gray-400">От рынка к империи</p>
+          </div>
+        ) : (
           <motion.div
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -87,13 +121,6 @@ const EpicDordoyTimeline = () => {
           </motion.div>
         )}
 
-        {isMobile && (
-          <div className="text-center mb-20">
-            <h1 className="text-4xl font-bold text-white mb-4">История Дордой</h1>
-            <p className="text-base text-gray-400">От рынка к империи</p>
-          </div>
-        )}
-
         <div ref={timelineRef} className="relative">
           <div className="absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 via-yellow-500 to-purple-500 transform -translate-x-1/2"></div>
 
@@ -101,6 +128,7 @@ const EpicDordoyTimeline = () => {
             const content = (
               <div
                 className={`flex ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'} items-center justify-center mb-32`}
+                key={era.year}
               >
                 <div className={`w-full md:w-1/2 p-6 ${index % 2 === 0 ? 'pr-0 md:pr-12' : 'pl-0 md:pl-12'}`}>
                   <div 
@@ -134,6 +162,7 @@ const EpicDordoyTimeline = () => {
               </div>
             );
 
+            // На мобильных - без анимации появления
             return isMobile ? content : (
               <motion.div
                 key={era.year}
@@ -149,21 +178,16 @@ const EpicDordoyTimeline = () => {
         </div>
       </div>
 
-      {/* Модальное окно — не трогаем, оно отдельно и легкое */}
+      {/* Оптимизированное модальное окно */}
       <AnimatePresence>
         {activeEra && (
           <motion.div 
             className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 backdrop-blur-sm"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            {...modalAnimations}
           >
             <motion.div 
               className={`relative max-w-2xl w-full rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br ${activeEra.color} border border-white/20`}
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ type: "spring", damping: 25 }}
+              {...modalContentAnimations}
             >
               <div className="relative h-72">
                 <img 
@@ -230,3 +254,6 @@ const EpicDordoyTimeline = () => {
 };
 
 export default EpicDordoyTimeline;
+
+
+  
