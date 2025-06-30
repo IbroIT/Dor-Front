@@ -95,7 +95,7 @@ const Hero = ({ src }) => {
           {/* Частицы */}
           <div 
             ref={particlesRef} 
-            className="absolute inset-0 overflow-hidden pointer-events-none"
+            className="absolute inset-0 overflow-hidden pt-[-555] pointer-events-none"
           />
           
           {/* Градиентные волны */}
