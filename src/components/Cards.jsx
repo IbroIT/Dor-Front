@@ -3,9 +3,7 @@ import './Cards.css';
 
 const Cards = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  const [activeCard, setActiveCard] = useState(null);
 
-  // Memoize checkScreenSize with debouncing
   const checkScreenSize = useCallback(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
@@ -13,24 +11,18 @@ const Cards = () => {
     let timeout;
     return () => {
       clearTimeout(timeout);
-      timeout = setTimeout(handleResize, 100); // Debounce by 100ms
+      timeout = setTimeout(handleResize, 100);
     };
   }, []);
 
   useEffect(() => {
     const resizeHandler = checkScreenSize();
-    resizeHandler(); // Initial check
+    resizeHandler();
     window.addEventListener('resize', resizeHandler);
     return () => window.removeEventListener('resize', resizeHandler);
   }, [checkScreenSize]);
 
-  // Memoize handleCardPress
-  const handleCardPress = useCallback((id) => {
-    setActiveCard((prev) => (prev === id ? null : id));
-  }, []);
-
-  // Memoize cardsData
-  const cardsData = useMemo(() => [
+     const cardsData = useMemo(() => [
     {
       id: 1,
       title: "Рынок «Дордой»",
@@ -62,7 +54,7 @@ const Cards = () => {
       id: 4,
       title: "«Дордой Моторс» рынок",
       link: "https://www.dordoi.net/",
-      imageUrl: "/img/dordoimarketlogo.png",
+      imageUrl: "/img/motorsmarketlogo.png",
       mobileImageUrl: "/img/dordoimarketlogo.png",
       description: "Специализированный рынок автозапчастей и аксессуаров, предлагающий товары для всех типов автомобилей.",
       color: "#03A9F4"
@@ -80,23 +72,24 @@ const Cards = () => {
       id: 6,
       title: "«Аламедин» рынок",
       link: "https://www.dordoi.net/",
-      imageUrl: "/img/alemedinmarketlogo.png",
-      mobileImageUrl: "/img/dordoimarketlogo.png",
+      imageUrl: "/img/alamedinmarketlogo.png",
+      mobileImageUrl: "/img/alamedinmarketlogo.png",
       description: "Популярный рынок с разнообразными товарами, включая одежду, продукты и бытовые изделия.",
       color: "#03A9F4"
     },
   ], []);
 
-  // Memoized Card component
-  const Card = React.memo(({ card, isMobile, activeCard, handleCardPress }) => (
-    <div
-      className={`card ${isMobile && activeCard === card.id ? 'mobile-active' : ''} ${
-        isMobile && activeCard !== card.id ? 'mobile-inactive' : ''
-      }`}
-      style={{ '--clr': card.color }}
-      onClick={() => isMobile && handleCardPress(card.id)}
+  const mobileCardsData = useMemo(() => {
+    return [...cardsData, ...cardsData.map(card => ({...card, id: card.id + cardsData.length}))];
+  }, [cardsData]);
+
+  const Card = React.memo(({ card, isMobile }) => (
+    <a
+      href={card.link}
+      className={`card ${isMobile ? 'mobile-card' : ''}`}
+      style={{ textDecoration: 'none' }}
     >
-      <div className={`img-box ${isMobile && activeCard !== card.id ? 'mobile-inactive' : ''}`}>
+      <div className="img-box">
         <img
           src={isMobile && card.mobileImageUrl ? card.mobileImageUrl : card.imageUrl}
           alt={card.title}
@@ -107,24 +100,29 @@ const Cards = () => {
       <div className="content">
         <h2>{card.title}</h2>
         <p>{card.description}</p>
-        <a href={card.link}>Подробнее</a>
+        {!isMobile && <a href={card.link} className="content-link">Подробнее</a>}
       </div>
-    </div>
+    </a>
   ));
 
-  return (
-    <div className={`card-container ${isMobile ? 'mobile' : ''}`}>
-      {cardsData.map((card) => (
-        <Card
-          key={card.id}
-          card={card}
-          isMobile={isMobile}
-          activeCard={activeCard}
-          handleCardPress={handleCardPress}
-        />
-      ))}
-    </div>
-  );
+    return (
+      <div className={`card-container ${isMobile ? 'mobile' : 'desktop-marquee'}`}>
+        {isMobile ? (
+          /* Мобильная версия без изменений */
+        ) : (
+          <div className="desktop-marquee-inner">
+            {/* Дублируем карточки для бесшовной анимации */}
+            {[...cardsData, ...cardsData].map((card, index) => (
+              <Card 
+                key={`desktop-${card.id}-${index}`} 
+                card={card} 
+                isMobile={false} 
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    );
 };
 
 export default Cards;
