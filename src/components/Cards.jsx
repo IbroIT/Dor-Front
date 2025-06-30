@@ -1,30 +1,40 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import './Cards.css';
 
 const Cards = () => {
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [activeCard, setActiveCard] = useState(null);
 
-  useEffect(() => {
-    const checkScreenSize = () => {
+  // Memoize checkScreenSize with debouncing
+  const checkScreenSize = useCallback(() => {
+    const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
     };
-
-    checkScreenSize();
-    window.addEventListener('resize', checkScreenSize);
-
-    return () => window.removeEventListener('resize', checkScreenSize);
+    let timeout;
+    return () => {
+      clearTimeout(timeout);
+      timeout = setTimeout(handleResize, 100); // Debounce by 100ms
+    };
   }, []);
 
-  const handleCardPress = (id) => {
-    setActiveCard(activeCard === id ? null : id);
-  };
+  useEffect(() => {
+    const resizeHandler = checkScreenSize();
+    resizeHandler(); // Initial check
+    window.addEventListener('resize', resizeHandler);
+    return () => window.removeEventListener('resize', resizeHandler);
+  }, [checkScreenSize]);
 
- const cardsData = [
+  // Memoize handleCardPress
+  const handleCardPress = useCallback((id) => {
+    setActiveCard((prev) => (prev === id ? null : id));
+  }, []);
+
+  // Memoize cardsData
+  const cardsData = useMemo(() => [
     {
       id: 1,
       title: "Рынок «Дордой»",
-      link: "./football",
+      link: "https://www.dordoi.net/",
       imageUrl: "/img/dordoimarketlogo.png",
       mobileImageUrl: "/img/dordoimarketlogo.png",
       description: "Крупнейший торговый рынок в Центральной Азии, предлагающий широкий ассортимент товаров оптом и в розницу.",
@@ -51,7 +61,7 @@ const Cards = () => {
     {
       id: 4,
       title: "«Дордой Моторс» рынок",
-      link: "./football",
+      link: "https://www.dordoi.net/",
       imageUrl: "/img/dordoimarketlogo.png",
       mobileImageUrl: "/img/dordoimarketlogo.png",
       description: "Специализированный рынок автозапчастей и аксессуаров, предлагающий товары для всех типов автомобилей.",
@@ -69,44 +79,49 @@ const Cards = () => {
     {
       id: 6,
       title: "«Аламедин» рынок",
-      link: "./football",
+      link: "https://www.dordoi.net/",
       imageUrl: "/img/alemedinmarketlogo.png",
       mobileImageUrl: "/img/dordoimarketlogo.png",
       description: "Популярный рынок с разнообразными товарами, включая одежду, продукты и бытовые изделия.",
       color: "#03A9F4"
     },
-];
+  ], []);
+
+  // Memoized Card component
+  const Card = React.memo(({ card, isMobile, activeCard, handleCardPress }) => (
+    <div
+      className={`card ${isMobile && activeCard === card.id ? 'mobile-active' : ''} ${
+        isMobile && activeCard !== card.id ? 'mobile-inactive' : ''
+      }`}
+      style={{ '--clr': card.color }}
+      onClick={() => isMobile && handleCardPress(card.id)}
+    >
+      <div className={`img-box ${isMobile && activeCard !== card.id ? 'mobile-inactive' : ''}`}>
+        <img
+          src={isMobile && card.mobileImageUrl ? card.mobileImageUrl : card.imageUrl}
+          alt={card.title}
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+      <div className="content">
+        <h2>{card.title}</h2>
+        <p>{card.description}</p>
+        <a href={card.link}>Подробнее</a>
+      </div>
+    </div>
+  ));
+
   return (
     <div className={`card-container ${isMobile ? 'mobile' : ''}`}>
       {cardsData.map((card) => (
-        <div
+        <Card
           key={card.id}
-          className={`card ${isMobile && activeCard === card.id ? 'mobile-active' : ''}`}
-          style={{
-            '--clr': card.color,
-            ...(isMobile && activeCard === card.id
-              ? { overflow: 'visible', zIndex: 100 }
-              : {})
-          }}
-          onClick={() => isMobile && handleCardPress(card.id)}
-        >
-          <div className="img-box">
-            <img
-              className="mx-auto"
-              src={isMobile && card.mobileImageUrl ? card.mobileImageUrl : card.imageUrl}
-              alt={card.title}
-              loading="lazy"
-              decoding="async"
-            />
-          </div>
-          <div className="content">
-            <h2>{card.title}</h2>
-            <div className={`description-container ${isMobile && activeCard === card.id ? 'visible' : ''}`}>
-              <p>{card.description}</p>
-              <a href={card.link} className="read-more-btn">Подробнее</a>
-            </div>
-          </div>
-        </div>
+          card={card}
+          isMobile={isMobile}
+          activeCard={activeCard}
+          handleCardPress={handleCardPress}
+        />
       ))}
     </div>
   );
