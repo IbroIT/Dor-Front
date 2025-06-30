@@ -7,11 +7,11 @@ import ScrollToTop from "./components/Home/ScrollToTop";
 // Главная страница загружается сразу
 import Home from "./pages/Home";
 
-// Остальные страницы - ленивая загрузка
-const Football = lazy(() => import("./pages/Football"));
-const University = lazy(() => import("./pages/University"));
-const Plaza = lazy(() => import("./pages/Plaza"));
-const NotFound = lazy(() => import("./NotFound"));
+// Ленивая загрузка остальных страниц с именованными чанками
+const Football = lazy(() => import(/* webpackChunkName: "Football" */ "./pages/Football"));
+const University = lazy(() => import(/* webpackChunkName: "University" */ "./pages/University"));
+const Plaza = lazy(() => import(/* webpackChunkName: "Plaza" */ "./pages/Plaza"));
+const NotFound = lazy(() => import(/* webpackChunkName: "NotFound" */ "./NotFound"));
 
 const Navbar = () => {
   const location = useLocation();
@@ -25,6 +25,16 @@ const Navbar = () => {
     { path: "/plaza", name: "Плаза", iconUrl: "https://icon-library.com/images/shopping-icon-png/shopping-icon-png-0.jpg" }
   ];
 
+  // Prefetch страниц при наведении
+  const prefetchPage = (path) => {
+    switch(path) {
+      case '/football': import(/* webpackChunkName: "Football" */ "./pages/Football"); break;
+      case '/university': import(/* webpackChunkName: "University" */ "./pages/University"); break;
+      case '/plaza': import(/* webpackChunkName: "Plaza" */ "./pages/Plaza"); break;
+      default: break;
+    }
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
@@ -32,16 +42,6 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  // Prefetch для страниц при наведении
-  const prefetchPage = (path) => {
-    switch(path) {
-      case '/football': import("./pages/Football"); break;
-      case '/university': import("./pages/University"); break;
-      case '/plaza': import("./pages/Plaza"); break;
-      default: break;
-    }
-  };
 
   return (
     <motion.header 
@@ -67,8 +67,8 @@ const Navbar = () => {
               whileHover={{ rotate: 15 }}
               transition={{ type: "spring" }}
             /><span className="ml-3 text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent hidden md:inline">
-              Dordoi
-            </span>
+  Dordoi
+</span>
           </Link>
         </motion.div>
         <nav className="hidden md:flex items-center space-x-1">
@@ -86,7 +86,7 @@ const Navbar = () => {
                 className="relative px-5 py-3 font-medium flex items-center group"
                 onMouseEnter={() => prefetchPage(item.path)}
               >
-                <span className="w-5 h-5 bg-no-repeat bg-center bg-contain inline-block mr-[6px] mb-[3px]" style={{ backgroundImage: `url(${item.iconUrl})` }} />
+                <span  className="w-5 h-5 bg-no-repeat bg-center bg-contain inline-block mr-[6px] mb-[3px]" style={{ backgroundImage: `url(${item.iconUrl})` }} />
    
                 <span className={`transition-colors ${
                   location.pathname === item.path 
@@ -120,48 +120,134 @@ const Navbar = () => {
           </svg>
         </motion.button>
 
-        {mobileMenuOpen && (
-          <motion.div 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 bg-white/95 backdrop-blur-lg pt-20 px-6 z-40 md:hidden"
-          >
-            <div className="flex flex-col space-y-4">
-              {navItems.map((item) => (
-                <motion.div
-                  key={item.path}
-                  initial={{ x: 50, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ type: "spring" }}
-                >
-                  <Link 
-                    to={item.path} 
-                    className="flex items-center px-6 text-xl rounded-lg transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                    onMouseEnter={() => prefetchPage(item.path)}
+          {mobileMenuOpen && (
+            <motion.div 
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              className="fixed inset-0 bg-white/95 backdrop-blur-lg pt-20 px-6 z-40 md:hidden"
+            >
+              <div className="flex flex-col space-y-4">
+                {navItems.map((item) => (
+                  <motion.div
+                    key={item.path}
+                    initial={{ x: 50, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ type: "spring" }}
                   >
-                    <span className="w-5 h-5 bg-no-repeat bg-center bg-contain inline-block mr-[6px] mb-[3px]" style={{ backgroundImage: `url(${item.iconUrl})` }} />
-                    <span className={`font-medium ${
-                      location.pathname === item.path 
-                        ? 'text-blue-600' 
-                        : 'text-gray-700'
-                    }`}>
-                      {item.name}
-                    </span>
-                    {location.pathname === item.path && (
-                      <motion.div
-                        layoutId="mobileNavIndicator"
-                        className="ml-auto w-2 h-2 bg-blue-600 rounded-full"
-                      />
-                    )}
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        )}
+                    <Link 
+                      to={item.path} 
+                      className="flex items-center px-6 text-xl rounded-lg transition-colors"
+                      onClick={() => setMobileMenuOpen(false)}
+                      onMouseEnter={() => prefetchPage(item.path)}
+                    >
+                      <span  className="w-5 h-5 bg-no-repeat bg-center bg-contain inline-block mr-[6px] mb-[3px]" style={{ backgroundImage: `url(${item.iconUrl})` }} />
+                      <span className={`font-medium ${
+                        location.pathname === item.path 
+                          ? 'text-blue-600' 
+                          : 'text-gray-700'
+                      }`}>
+                        {item.name}
+                      </span>
+                      {location.pathname === item.path && (
+                        <motion.div
+                          layoutId="mobileNavIndicator"
+                          className="ml-auto w-2 h-2 bg-blue-600 rounded-full"
+                        />
+                      )}
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+  {mobileMenuOpen && (
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      className="fixed inset-0 z-50 md:hidden"
+    >
+      
+      {/* Контейнер меню с прокруткой */}
+      <motion.div
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: -20, opacity: 0 }}
+        transition={{ type: "spring", damping: 20 }}
+        className="relative h-full w-full flex flex-col"
+      >
+        {/* Шапка меню */}
+        <div className="flex justify-between items-center pt-6 pl-6 pr-6 pb-2 ">
+          <div className="flex items-center">
+            <img 
+              src="/img/logo.png" 
+              alt="Dordoi Logo"
+              className="w-10 h-10 mr-3 rounded-full"
+            />
+          </div>
+          <button
+            onClick={() => setMobileMenuOpen(false)}
+            className="p-2 text-gray-300 hover:text-white transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Основное содержимое с прокруткой */}
+        <div className="flex-1 bg-gray-800 p-2 pb-4 pt-3 px-6">
+          <div className="space-y-2">
+            {navItems.map((item, index) => (
+              <motion.div
+                key={item.path}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ 
+                  opacity: 1, 
+                  x: 0,
+                  transition: { 
+                    delay: 0.1 + index * 0.05,
+                    type: "spring", 
+                    stiffness: 300
+                  }
+                }}
+              >
+                <Link 
+                  to={item.path}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`
+                    flex items-center py-3 px-4 rounded-lg
+                    text-lg font-medium transition-all
+                    ${location.pathname === item.path
+                      ? 'bg-blue-600/90 text-white shadow-md '
+                      : 'bg-gray-800/85 text-gray-200 hover:bg-gray-700/70 border-2 border-white'
+                    }
+                  `}
+                  onMouseEnter={() => prefetchPage(item.path)}
+                >
+                  <span className="mr-3 text-xl">{item.icon}</span>
+                  <span className="flex-1">{item.name}</span>
+                  {location.pathname === item.path && (
+                    <motion.span
+                      layoutId="mobileNavIndicator"
+                      className="w-2 h-2 bg-white rounded-full"
+                    />
+                  )}
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+
+         
+        </div>
+
+        
+      </motion.div>
+    </motion.div>
+  )}
       </div>
     </motion.header>
   );
