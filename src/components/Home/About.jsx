@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, memo } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import {
   ShieldCheckIcon,
@@ -11,10 +11,39 @@ import {
 } from '@heroicons/react/24/solid';
 import { useInView } from 'react-intersection-observer';
 
+// Memoized CoreValue component
+const CoreValue = memo(({ value }) => (
+  <div
+    className={`bg-gradient-to-br ${value.color} rounded-2xl p-8 shadow-xl overflow-hidden relative`}
+  >
+    <div className="absolute -inset-1 bg-white/10 rounded-2xl blur-md" />
+    <div className="relative z-10">
+      <div className="mb-6">{value.icon}</div>
+      <h3 className="text-2xl font-bold mb-3">{value.title}</h3>
+      <p className="text-gray-300">{value.description}</p>
+    </div>
+  </div>
+));
+
+// Memoized Achievement component
+const Achievement = memo(({ item }) => (
+  <div
+    className={`bg-gradient-to-br ${
+      item.index % 2 === 0 ? 'from-gray-800 to-gray-900' : 'from-gray-700 to-gray-800'
+    } rounded-2xl p-6 shadow-lg border border-gray-600/30`}
+  >
+    <div className="text-amber-400 mb-3">{item.icon}</div>
+    <h3 className="text-2xl font-bold mb-1">{item.value}</h3>
+    <p className="text-gray-400">{item.label}</p>
+  </div>
+));
+
 const DordoiPage = () => {
   const ref = useRef(null);
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  // Use matchMedia for mobile detection to avoid SSR issues
+  const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches;
 
+  // Optimize scroll tracking
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start start', 'end start']
@@ -23,9 +52,10 @@ const DordoiPage = () => {
   const yBg = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
   const opacityBg = useTransform(scrollYProgress, [0, 0.5], [1, 0.3]);
 
-  const [historyRef, historyInView] = useInView({ triggerOnce: false, threshold: 0.3 });
-  const [missionRef, missionInView] = useInView({ triggerOnce: false, threshold: 0.3 });
-  const [valuesRef, valuesInView] = useInView({ triggerOnce: false, threshold: 0.2 });
+  // Optimize inView with triggerOnce
+  const [historyRef, historyInView] = useInView({ triggerOnce: true, threshold: 0.3 });
+  const [missionRef, missionInView] = useInView({ triggerOnce: true, threshold: 0.3 });
+  const [valuesRef, valuesInView] = useInView({ triggerOnce: true, threshold: 0.2 });
 
   const coreValues = [
     {
@@ -55,29 +85,35 @@ const DordoiPage = () => {
   ];
 
   const achievements = [
-    { icon: <BuildingStorefrontIcon className="h-8 w-8" />, value: '30+', label: 'Торговых центров' },
-    { icon: <AcademicCapIcon className="h-8 w-8" />, value: '5+', label: 'Образовательных учреждений' },
-    { icon: <TrophyIcon className="h-8 w-8" />, label: 'Футбольный клуб', value: 'Дордой' },
-    { icon: <UsersIcon className="h-8 w-8" />, value: '5000+', label: 'Сотрудников' }
+    { icon: <BuildingStorefrontIcon className="h-8 w-8" />, value: '30+', label: 'Торговых центров', index: 0 },
+    { icon: <AcademicCapIcon className="h-8 w-8" />, value: '5+', label: 'Образовательных учреждений', index: 1 },
+    { icon: <TrophyIcon className="h-8 w-8" />, label: 'Футбольный клуб', value: 'Дордой', index: 2 },
+    { icon: <UsersIcon className="h-8 w-8" />, value: '5000+', label: 'Сотрудников', index: 3 }
   ];
+
+  const bgImage = 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=2070&auto=format&fit=crop';
 
   return (
     <div ref={ref} className="relative bg-gray-900 text-white overflow-hidden">
-      {/* Параллакс фон */}
+      {/* Parallax background */}
       {!isMobile && (
         <motion.div
           className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center"
           style={{ y: yBg, opacity: opacityBg }}
+          loading="lazy"
         />
       )}
       {isMobile && (
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-40" />
+        <div
+          className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-40"
+          loading="lazy"
+        />
       )}
 
-      {/* Частицы */}
+      {/* Particles: Reduced count for performance */}
       {!isMobile && (
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[...Array(30)].map((_, i) => (
+          {[...Array(20)].map((_, i) => (
             <motion.div
               key={i}
               className="absolute rounded-full bg-white opacity-10"
@@ -90,7 +126,6 @@ const DordoiPage = () => {
               }}
               animate={{
                 y: [0, (Math.random() - 0.5) * 100],
-                x: [0, (Math.random() - 0.5) * 100],
                 opacity: [0.1, 0.3, 0.1]
               }}
               transition={{
@@ -104,7 +139,7 @@ const DordoiPage = () => {
         </div>
       )}
 
-      {/* История компании */}
+      {/* History Section */}
       <section ref={historyRef} className="relative py-24 px-6 bg-gradient-to-b from-gray-900 to-black">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
@@ -126,23 +161,19 @@ const DordoiPage = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-6">
-              {achievements.map((item, index) => (
-                <div
-                  key={index}
-                  className={`bg-gradient-to-br ${index % 2 === 0 ? 'from-gray-800 to-gray-900' : 'from-gray-700 to-gray-800'} rounded-2xl p-6 shadow-lg border border-gray-600/30`}
-                >
-                  <div className="text-amber-400 mb-3">{item.icon}</div>
-                  <h3 className="text-2xl font-bold mb-1">{item.value}</h3>
-                  <p className="text-gray-400">{item.label}</p>
-                </div>
+              {achievements.map((item) => (
+                <Achievement key={item.label} item={item} />
               ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Миссия компании */}
-      <section ref={missionRef} className="relative py-32 px-6 bg-[url('https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?q=80&w=2069&auto=format&fit=crop')] bg-cover bg-center bg-fixed">
+      {/* Mission Section */}
+      <section
+        ref={missionRef}
+        className="relative py-32 px-6 bg-[url('https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?q=80&w=2069&auto=format&fit=crop')] bg-cover bg-center bg-fixed"
+      >
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-black/60" />
         <div className="relative max-w-4xl mx-auto text-center">
           <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-amber-400 to-yellow-300">
@@ -159,7 +190,7 @@ const DordoiPage = () => {
         </div>
       </section>
 
-      {/* Ценности компании */}
+      {/* Core Values Section */}
       <section ref={valuesRef} className="relative py-24 px-6 bg-gradient-to-b from-black to-gray-900">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
@@ -171,17 +202,7 @@ const DordoiPage = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {coreValues.map((value, index) => (
-              <div
-                key={index}
-                className={`bg-gradient-to-br ${value.color} rounded-2xl p-8 shadow-xl overflow-hidden relative`}
-              >
-                <div className="absolute -inset-1 bg-white/10 rounded-2xl blur-md" />
-                <div className="relative z-10">
-                  <div className="mb-6">{value.icon}</div>
-                  <h3 className="text-2xl font-bold mb-3">{value.title}</h3>
-                  <p className="text-gray-300">{value.description}</p>
-                </div>
-              </div>
+              <CoreValue key={index} value={value} />
             ))}
           </div>
         </div>
@@ -190,4 +211,4 @@ const DordoiPage = () => {
   );
 };
 
-export default DordoiPage;
+export default memo(DordoiPage);

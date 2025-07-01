@@ -200,7 +200,7 @@ const Features = () => {
   const bentoItems = [
     {
       id: 1,
-      src: "videos/feature-22.mp4",
+      src: "videos/feature-22.webm",
       title: <>F<b>oo</b>tball</>,
       description: "Инновационный этап развитие футбольного клуба ",
       className: "bento-tilt_1 row-span-1 md:col-span-1 md:row-span-2",
@@ -208,7 +208,7 @@ const Features = () => {
     },
     {
       id: 2,
-      src: "videos/feature-3.mp4",
+      src: "videos/feature-3.webm",
       title: <>uni<b>v</b>ersity</>,
       description: "Образовательные решения нового поколения",
       className: "bento-tilt_1 row-span-1 md:col-span-1",
@@ -216,7 +216,7 @@ const Features = () => {
     },
     {
       id: 3,
-      src: "videos/feature-4.mp4",
+      src: "videos/feature-4.webm",
       title: <>pl<b>a</b>za</>,
       description: "Торговые пространства будущего",
       className: "bento-tilt_1 md:col-span-1",
