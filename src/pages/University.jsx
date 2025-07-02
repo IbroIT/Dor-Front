@@ -8,10 +8,8 @@ import Par from '../components/UnHero'
 import News from '../components/UnNews'
 import Footer from '../components/UnFooter'
 const Universiy = () => {
-  const video = '/videos/hero-2.mp4';
   return (
     <div>
-      <Hero src={video} />
       <Par />
       <Facu /> 
       <Part2 />

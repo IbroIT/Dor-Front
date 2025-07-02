@@ -5,19 +5,19 @@ import { FiChevronRight, FiChevronLeft, FiMapPin, FiPhone, FiMail, FiClock, FiSh
 const slides = [
   {
     id: 1,
-    image: 'https://images.unsplash.com/photo-1601924638867-3a6de6b7a500?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
-    title: 'Весенние скидки до 50%!',
-    description: 'Только в Dordoi Plaza с 1 по 30 мая',
-    cta: 'Узнать больше',
-    ctaLink: 'https://dordoiplaza.kg/shops'
-  },
-  {
-    id: 2,
     image: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
     title: 'Новый кинотеатр в Dordoi Plaza',
     description: 'Смотрите новинки кино с комфортом',
     cta: 'Расписание сеансов',
     ctaLink: 'https://cinematica.kg/'
+  },
+  {
+    id: 2,
+    image: 'https://images.unsplash.com/photo-1601924638867-3a6de6b7a500?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
+    title: 'Весенние скидки до 50%!',
+    description: 'Только в Dordoi Plaza с 1 по 30 мая',
+    cta: 'Узнать больше',
+    ctaLink: 'https://dordoiplaza.kg/shops'
   },
   {
     id: 3,
@@ -73,7 +73,7 @@ const stores = [
     description: 'Спортивная одежда и инвентарь для профессиональных атлетов и любителей',
     hours: '10:00 - 22:00',
     location: '3 этаж, секция D7',
-    image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
+    image: 'https://images.pexels.com/photos/209969/pexels-photo-209969.jpeg',
     logo: 'https://i.ibb.co/0jF9LqS/techworld.jpg',
     rating: 4.6,
     promo: 'Скидка 20% на кроссовки'
@@ -826,7 +826,7 @@ export default function DordoiPlazaPage() {
 
   return (
     <div className="font-sans text-gray-800 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
         <HeroSlider slides={slides} currentSlide={currentSlide} setCurrentSlide={setCurrentSlide} />
 
         <motion.section 

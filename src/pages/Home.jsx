@@ -12,13 +12,13 @@ import About from "../components/Home/About";
 
 
 const Home = () => {
-  const video = '/videos/hero-4.mp4';
+  const video = '/videos/hero-4.webm';
+  const poster = '/img/poster-1.jpg';
   return (
     <div className=''>
-        <Hero src={video} />
+        <Hero src={video} poster={poster} />
         <Cards />
         <Stories />
-
         <About /> 
         <History />
         <Stor />  

@@ -1,4 +1,27 @@
 import { title } from "framer-motion/client";
+import banner1 from './assets/banner1.webp';
+import banner2 from './assets/banner2.webp';
+import banner3 from './assets/banner3.webp';
+import banner1Mobile from './assets/banner1Mobile.webp';
+import banner2Mobile from './assets/banner2Mobile.webp';
+import banner3Mobile from './assets/banner3Mobile.webp';
+
+
+export const banners = [
+    {
+      imageDesktop: banner1,
+      imageMobile: banner1Mobile,
+      title: 'Расторжение контракта с Лукой',
+    },{
+      imageDesktop: banner2,
+      imageMobile: banner2Mobile,
+      title: 'Матч Мурас Юнайтед vs FC Dordoi',
+    },{
+      imageDesktop: banner3,
+      imageMobile: banner3Mobile,
+      title: 'Дордой победил FC Ilbirs',
+    }
+  ];
 
 export const matchesData = [
   {
