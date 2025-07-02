@@ -301,7 +301,6 @@ const HeroSlider = ({ slides, currentSlide, setCurrentSlide }) => {
           )
         ))}
       </AnimatePresence>
-
       <button 
         onClick={prevSlide}
         className="absolute left-6 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 text-white p-3 rounded-full backdrop-blur-sm z-20 transition-all duration-300 hover:scale-110"
