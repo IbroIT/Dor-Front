@@ -20,14 +20,11 @@ const Navbar = () => {
       path: '/markets',
       icon: '🏪',
       subItems: [
-        { title: 'Рынок «Дордой»', path: '/markets/dordoi' },
+        { title: 'Рынок «Дордой»', path: '/markets/dordoi', website: 'https://www.exportasia.ru/'},
         { title: 'Рынок "Аламедин"', path: '/markets/alamedin' },
         { title: 'Рынок "Дордой Моторс"', path: '/markets/dordoi-motors' },
         { title: 'Рынок «Мадина»', path: '/markets/madina' },
         { title: 'ТЦ «Dordoi Plaza»', path: '/markets/dordoi-plaza' },
-        { title: 'Условия аренды', path: '/markets/rent' },
-        { title: 'Интерактивная карта', path: '/markets/map' },
-        { title: 'Часто задаваемые вопросы', path: '/markets/faq' },
       ],
     },
     {
@@ -169,17 +166,31 @@ const Navbar = () => {
                       className={`absolute left-0 mt-0 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 p-1 ${activeSubmenu === index ? 'block' : 'hidden'} group-hover:block hover:block`}
                     >
                       <div className="py-1">
-                        {item.subItems.map((subItem, subIndex) => (
-                          <Link
-                            key={subIndex}
-                            to={subItem.path}
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-md"
-                            onClick={closeAllMenus}
-                          >
-                            {subItem.title}
-                          </Link>
-                        ))}
+                          {item.subItems.map((subItem, subIndex) =>
+                            subItem.website ? (
+                              <a
+                                key={subIndex}
+                                href={subItem.website}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-md"
+                                onClick={closeAllMenus}
+                              >
+                                {subItem.title}
+                              </a>
+                            ) : (
+                              <Link
+                                key={subIndex}
+                                to={subItem.path}
+                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-md"
+                                onClick={closeAllMenus}
+                              >
+                                {subItem.title}
+                              </Link>
+                            )
+                          )}
                       </div>
+
                     </div>
                   </div>
                 ) : (
