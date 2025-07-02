@@ -1,49 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import './Navbar.css';
-import logo from '/img/logo.png'; // Adjust the path as necessary
+import { Link } from "react-router-dom";
+
 
 const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState(null);
-  const location = useLocation();
-  const navbarRef = useRef(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (navbarRef.current && !navbarRef.current.contains(event.target)) {
-        setMobileMenuOpen(false);
-        setActiveDropdown(null);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  useEffect(() => {
-    setMobileMenuOpen(false);
-    setActiveDropdown(null);
-  }, [location]);
-
-  const toggleDropdown = (index) => {
-    setActiveDropdown(activeDropdown === index ? null : index);
-  };
-
   const navItems = [
-    { title: 'Главная', path: '/' },
+    { title: 'Главная', path: '/', icon: '🏠' },
     {
       title: 'О нас',
       path: '/about',
+      icon: 'ℹ️',
       subItems: [
         { title: 'История ассоциации', path: '/about/history' },
         { title: 'Миссия и цели', path: '/about/mission' },
@@ -52,8 +17,9 @@ const Navbar = () => {
       ],
     },
     {
-      title: '🏪 Рынки',
+      title: 'Рынки',
       path: '/markets',
+      icon: '🏪',
       subItems: [
         { title: 'Рынок «Дордой»', path: '/markets/dordoi' },
         { title: 'Рынок "Аламедин"', path: '/markets/alamedin' },
@@ -66,8 +32,9 @@ const Navbar = () => {
       ],
     },
     {
-      title: '🤝 Партнёры',
+      title: 'Партнёры',
       path: '/partners',
+      icon: '🤝',
       subItems: [
         { title: 'Текущие партнёры', path: '/partners/current' },
         { title: 'Международные проекты', path: '/partners/international' },
@@ -76,8 +43,9 @@ const Navbar = () => {
       ],
     },
     {
-      title: '📰 Новости',
+      title: 'Новости',
       path: '/news',
+      icon: '📰',
       subItems: [
         { title: 'Новости рынков', path: '/news/market-news' },
         { title: 'Пресс-релизы', path: '/news/press' },
@@ -85,8 +53,9 @@ const Navbar = () => {
       ],
     },
     {
-      title: '🎓 Образование',
+      title: 'Образование',
       path: '/education',
+      icon: '🎓',
       subItems: [
         { title: 'Салымбеков университет колледж IT и Бизнеса', path: '/education/university' },
         { title: 'Медицина', path: '/education/medicine' },
@@ -94,16 +63,18 @@ const Navbar = () => {
       ],
     },
     {
-      title: '📂 Документы',
+      title: 'Документы',
       path: '/documents',
+      icon: '📂',
       subItems: [
         { title: 'Устав и внутренние положения', path: '/documents/statute' },
         { title: 'Сертификаты и лицензии', path: '/documents/certificates' },
       ],
     },
     {
-      title: '📞 Контакты',
+      title: 'Контакты',
       path: '/contacts',
+      icon: '📞',
       subItems: [
         { title: 'Центральный офис', path: '/contacts/office' },
         { title: 'Адреса рынков и ТЦ', path: '/contacts/addresses' },
@@ -114,76 +85,166 @@ const Navbar = () => {
     },
   ];
 
+  const [activeSubmenu, setActiveSubmenu] = useState(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navbarRef = useRef(null);
+
+  // Close submenus when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (navbarRef.current && !navbarRef.current.contains(event.target)) {
+        setActiveSubmenu(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const toggleSubmenu = (index) => {
+    setActiveSubmenu(activeSubmenu === index ? null : index);
+  };
+
+  const closeAllMenus = () => {
+    setActiveSubmenu(null);
+    setMobileMenuOpen(false);
+  };
+
   return (
     <nav 
       ref={navbarRef}
-      className={`navbar ${isScrolled ? 'scrolled' : ''} ${mobileMenuOpen ? 'mobile-open' : ''}`}
+      className="bg-white shadow-md relative z-50"
     >
-      <div className="navbar-container">
-        <Link to="/" className="navbar-logo">
-          <img src={logo} alt="Dordoi Logo" className="logo-image" />
-        </Link>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16">
+          {/* Mobile menu button */}
+          <div className="flex items-center md:hidden">
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-100 focus:outline-none"
+            >
+              <span className="sr-only">Open main menu</span>
+              {mobileMenuOpen ? (
+                <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              ) : (
+                <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              )}
+            </button>
+          </div>
 
-        <div 
-          className={`navbar-toggle ${mobileMenuOpen ? 'open' : ''}`}
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-label="Toggle menu"
-        >
-          <span className="bar"></span>
-          <span className="bar"></span>
-          <span className="bar"></span>
-        </div>
-
-        <div className={`navbar-menu ${mobileMenuOpen ? 'active' : ''}`}>
-          <ul className="navbar-list">
+          {/* Desktop menu */}
+          <div className="hidden md:flex items-center space-x-1">
             {navItems.map((item, index) => (
-              <li 
-                key={index}
-                className={`navbar-item ${activeDropdown === index ? 'active' : ''}`}
-                onMouseEnter={() => window.innerWidth > 992 && item.subItems && setActiveDropdown(index)}
-                onMouseLeave={() => window.innerWidth > 992 && setActiveDropdown(null)}
-              >
-                <Link 
-                  to={item.path}
-                  className={`navbar-link ${location.pathname === item.path ? 'active-link' : ''}`}
-                  onClick={() => {
-                    if (item.subItems && window.innerWidth <= 992) {
-                      toggleDropdown(index);
-                    } else {
-                      setMobileMenuOpen(false);
-                    }
-                  }}
-                >
-                  <span className="link-text">{item.title}</span>
-                  {item.subItems && (
-                    <span className="dropdown-arrow">
-                      <svg width="12" height="7" viewBox="0 0 12 7" fill="none">
-                        <path d="M1 1L6 6L11 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+              <div key={index} className="relative group">
+                {item.subItems ? (
+                  <>
+                    <button
+                      onClick={() => toggleSubmenu(index)}
+                      className={`flex items-center px-3 py-2 rounded-md text-sm font-medium ${activeSubmenu === index ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'}`}
+                    >
+                      <span className="mr-2">{item.icon}</span>
+                      {item.title}
+                      <svg
+                        className={`ml-1 h-4 w-4 transform transition-transform ${activeSubmenu === index ? 'rotate-180' : ''}`}
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
                       </svg>
-                    </span>
-                  )}
-                </Link>
+                    </button>
 
-                {item.subItems && (
-                  <div className={`dropdown-container ${activeDropdown === index ? 'show' : ''}`}>
-                    <ul className="dropdown-menu">
-                      {item.subItems.map((subItem, subIndex) => (
-                        <li key={subIndex} className="dropdown-item">
-                          <Link 
-                            to={subItem.path}
-                            className={`dropdown-link ${location.pathname === subItem.path ? 'active-dropdown-link' : ''}`}
-                            onClick={() => setMobileMenuOpen(false)}
+                    <div
+                      className={`absolute left-0 mt-0 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 p-1 ${activeSubmenu === index ? 'block' : 'hidden'} group-hover:block hover:block`}
+                    >
+                      <div className="py-1">
+                        {item.subItems.map((subItem, subIndex) => (
+                          <Link
+                            key={subIndex}
+                            href={subItem.path}
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-md"
+                            onClick={closeAllMenus}
                           >
                             {subItem.title}
                           </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                        ))}
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <Link
+                    href={item.path}
+                    className={`flex items-center px-3 py-2 rounded-md text-sm font-medium ${activeSubmenu === index ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'}`}
+                    onClick={closeAllMenus}
+                  >
+                    <span className="mr-2">{item.icon}</span>
+                    {item.title}
+                  </Link>
                 )}
-              </li>
+              </div>
             ))}
-          </ul>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile menu */}
+      <div className={`md:hidden ${mobileMenuOpen ? 'block' : 'hidden'}`}>
+        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white shadow-lg">
+          {navItems.map((item, index) => (
+            <div key={index}>
+              {item.subItems ? (
+                <>
+                  <button
+                    onClick={() => toggleSubmenu(index)}
+                    className={`w-full flex justify-between items-center px-3 py-2 rounded-md text-base font-medium ${activeSubmenu === index ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'}`}
+                  >
+                    <div className="flex items-center">
+                      <span className="mr-2">{item.icon}</span>
+                      {item.title}
+                    </div>
+                    <svg
+                      className={`h-5 w-5 transform transition-transform ${activeSubmenu === index ? 'rotate-180' : ''}`}
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                  </button>
+
+                  {activeSubmenu === index && (
+                    <div className="pl-6 pt-1 space-y-1">
+                      {item.subItems.map((subItem, subIndex) => (
+                        <Link
+                          key={subIndex}
+                          href={subItem.path}
+                          className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50"
+                          onClick={closeAllMenus}
+                        >
+                          {subItem.title}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </>
+              ) : (
+                <Link
+                  href={item.path}
+                  className={`w-full flex items-center px-3 py-2 rounded-md text-base font-medium ${activeSubmenu === index ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'}`}
+                  onClick={closeAllMenus}
+                >
+                  <span className="mr-2">{item.icon}</span>
+                  {item.title}
+                </Link>
+              )}
+            </div>
+          ))}
         </div>
       </div>
     </nav>
