@@ -56,9 +56,9 @@ const Navbar = () => {
       path: '/education',
       icon: '🎓',
       subItems: [
-        { title: 'Салымбеков университет колледж IT и Бизнеса', path: '/education/university' },
-        { title: 'Медицина', path: '/education/medicine' },
-        { title: 'AIT', path: '/education/ait' },
+        { title: 'Салымбеков университет колледж IT и Бизнеса', path: 'https://salymbekov.com' },
+        { title: 'Медицина', path: 'https://salymbekov.com' },
+        { title: 'Американский институт технологий', path: 'https://www.aitkg.com/' },
       ],
     },
     {
@@ -83,7 +83,6 @@ const Navbar = () => {
       ],
     },
   ];
-
 
   const [activeSubmenu, setActiveSubmenu] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
