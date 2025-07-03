@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
-import { Link } from "react-router-dom";
+import { useState, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const navItems = [
@@ -56,9 +56,9 @@ const Navbar = () => {
       path: '/education',
       icon: '🎓',
       subItems: [
-        { title: 'Салымбеков университет колледж IT и Бизнеса', path: '/education/university' },
-        { title: 'Медицина', path: '/education/medicine' },
-        { title: 'AIT', path: '/education/ait' },
+        { title: 'Салымбеков университет колледж IT и Бизнеса', path: 'https://salymbekov.com' },
+        { title: 'Медицина', path: 'https://salymbekov.com' },
+        { title: 'Американский институт технологий', path: 'https://www.aitkg.com/' },
       ],
     },
     {
@@ -88,18 +88,16 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navbarRef = useRef(null);
 
-  // Close submenus when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (navbarRef.current && !navbarRef.current.contains(event.target)) {
         setActiveSubmenu(null);
+        setMobileMenuOpen(false);
       }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const toggleSubmenu = (index) => {
@@ -112,10 +110,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav 
-      ref={navbarRef}
-      className="bg-white shadow-md relative z-50"
-    >
+    <nav ref={navbarRef} className="bg-white shadow-md relative z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           {/* Mobile menu button */}
@@ -142,22 +137,33 @@ const Navbar = () => {
             {navItems.map((item, index) => (
               <div key={index} className="relative group">
                 {item.subItems ? (
-                  <>
-                    <button
-                      onClick={() => toggleSubmenu(index)}
-                      className={`flex items-center px-3 py-2 rounded-md text-sm font-medium ${activeSubmenu === index ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'}`}
-                    >
-                      <span className="mr-2">{item.icon}</span>
-                      {item.title}
-                      <svg
-                        className={`ml-1 h-4 w-4 transform transition-transform ${activeSubmenu === index ? 'rotate-180' : ''}`}
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
+                  <div className="relative">
+                    <div className="flex items-center">
+                      <Link
+                        to={item.path}
+                        className={`flex items-center px-3 py-2 rounded-md text-sm font-medium ${activeSubmenu === index ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'}`}
+                        onClick={closeAllMenus}
                       >
-                        <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                      </svg>
-                    </button>
+                        <span className="mr-2">{item.icon}</span>
+                        {item.title}
+                      </Link>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleSubmenu(index);
+                        }}
+                        className="p-1 text-gray-500 hover:text-gray-700"
+                      >
+                        <svg
+                          className={`h-4 w-4 transform transition-transform ${activeSubmenu === index ? 'rotate-180' : ''}`}
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                        </svg>
+                      </button>
+                    </div>
 
                     <div
                       className={`absolute left-0 mt-0 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 p-1 ${activeSubmenu === index ? 'block' : 'hidden'} group-hover:block hover:block`}
@@ -166,7 +172,7 @@ const Navbar = () => {
                         {item.subItems.map((subItem, subIndex) => (
                           <Link
                             key={subIndex}
-                            href={subItem.path}
+                            to={subItem.path}
                             className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-md"
                             onClick={closeAllMenus}
                           >
@@ -175,10 +181,10 @@ const Navbar = () => {
                         ))}
                       </div>
                     </div>
-                  </>
+                  </div>
                 ) : (
                   <Link
-                    href={item.path}
+                    to={item.path}
                     className={`flex items-center px-3 py-2 rounded-md text-sm font-medium ${activeSubmenu === index ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'}`}
                     onClick={closeAllMenus}
                   >
@@ -199,30 +205,39 @@ const Navbar = () => {
             <div key={index}>
               {item.subItems ? (
                 <>
-                  <button
-                    onClick={() => toggleSubmenu(index)}
-                    className={`w-full flex justify-between items-center px-3 py-2 rounded-md text-base font-medium ${activeSubmenu === index ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'}`}
-                  >
-                    <div className="flex items-center">
+                  <div className="flex items-center">
+                    <Link
+                      to={item.path}
+                      className={`flex-1 flex items-center px-3 py-2 rounded-md text-base font-medium ${activeSubmenu === index ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'}`}
+                      onClick={closeAllMenus}
+                    >
                       <span className="mr-2">{item.icon}</span>
                       {item.title}
-                    </div>
-                    <svg
-                      className={`h-5 w-5 transform transition-transform ${activeSubmenu === index ? 'rotate-180' : ''}`}
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
+                    </Link>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleSubmenu(index);
+                      }}
+                      className="p-2 text-gray-500 hover:text-gray-700"
                     >
-                      <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                    </svg>
-                  </button>
+                      <svg
+                        className={`h-5 w-5 transform transition-transform ${activeSubmenu === index ? 'rotate-180' : ''}`}
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                      </svg>
+                    </button>
+                  </div>
 
                   {activeSubmenu === index && (
                     <div className="pl-6 pt-1 space-y-1">
                       {item.subItems.map((subItem, subIndex) => (
                         <Link
                           key={subIndex}
-                          href={subItem.path}
+                          to={subItem.path}
                           className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50"
                           onClick={closeAllMenus}
                         >
@@ -234,7 +249,7 @@ const Navbar = () => {
                 </>
               ) : (
                 <Link
-                  href={item.path}
+                  to={item.path}
                   className={`w-full flex items-center px-3 py-2 rounded-md text-base font-medium ${activeSubmenu === index ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'}`}
                   onClick={closeAllMenus}
                 >
