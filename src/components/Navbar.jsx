@@ -60,7 +60,6 @@ const Navbar = () => {
     },
     {
       title: 'Документы',
-      path: '/documents',
       icon: '📂',
       subItems: [
         { title: 'Устав и внутренние положения', path: '/documents/statute' },

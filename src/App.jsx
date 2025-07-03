@@ -10,14 +10,8 @@ import Leadership from './pages/about/Leadership';
 import Structure from './pages/about/Structure';
 
 // Рынки
-import Markets from './pages/markets/Markets';
-import DordoiMarket from './pages/markets/DordoiMarket';
 import AlamedinMarket from './pages/markets/AlamedinMarket';
 import DordoiMotors from './pages/markets/DordoiMotors';
-import MadinaMarket from './pages/markets/MadinaMarket';
-import DordoiPlaza from './pages/markets/DordoiPlaza';
-import RentConditions from './pages/markets/RentConditions';
-import MarketFAQ from './pages/markets/MarketFAQ';
 
 // Партнёры
 import Partners from './pages/partners/Partners';
@@ -41,7 +35,6 @@ import MedicineEducation from './pages/education/MedicineEducation';
 import AIT from './pages/education/AIT';
 
 // Документы
-import Documents from './pages/documents/Documents';
 import Statute from './pages/documents/Statute';
 import Certificates from './pages/documents/Certificates';
 
@@ -73,7 +66,6 @@ function App() {
   <Route path="/about/structure" element={<Structure />} />
   
   {/* Рынки */}
-  <Route path="/markets" element={<Markets />} />
   <Route path="/markets/alamedin" element={<AlamedinMarket />} />
   <Route path="/markets/dordoi-motors" element={<DordoiMotors />} />
   
@@ -98,7 +90,6 @@ function App() {
   <Route path="/education/ait" element={<AIT />} />
   
   {/* Документы */}
-  <Route path="/documents" element={<Documents />} />
   <Route path="/documents/statute" element={<Statute />} />
   <Route path="/documents/certificates" element={<Certificates />} />
   
