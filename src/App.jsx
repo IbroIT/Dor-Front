@@ -72,13 +72,8 @@ function App() {
   
   {/* Рынки */}
   <Route path="/markets" element={<Markets />} />
-  <Route path="/markets/dordoi" element={<DordoiMarket />} />
   <Route path="/markets/alamedin" element={<AlamedinMarket />} />
   <Route path="/markets/dordoi-motors" element={<DordoiMotors />} />
-  <Route path="/markets/madina" element={<MadinaMarket />} />
-  <Route path="/markets/dordoi-plaza" element={<DordoiPlaza />} />
-  <Route path="/markets/rent" element={<RentConditions />} />
-  <Route path="/markets/faq" element={<MarketFAQ />} />
   
   {/* Партнёры */}
   <Route path="/partners" element={<Partners />} />
