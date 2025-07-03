@@ -23,7 +23,7 @@ const Navbar = () => {
         { title: 'Рынок «Дордой»', path: '/markets/dordoi', website: 'https://www.exportasia.ru/'},
         { title: 'Рынок "Аламедин"', path: '/markets/alamedin' },
         { title: 'Рынок "Дордой Моторс"', path: '/markets/dordoi-motors' },
-        { title: 'Рынок «Мадина»', path: '/markets/madina' },
+        { title: 'Рынок «Мадина»', path: '/markets/madina', website: 'https://www.exportasia.ru/%D0%BC%D0%B0%D0%B3%D0%B0%D0%B7%D0%B8%D0%BD%D1%8B/%D0%BC%D0%B0%D0%B4%D0%B8%D0%BD%D0%B0' },
         { title: 'ТЦ «Dordoi Plaza»', path: '/markets/dordoi-plaza' },
       ],
     },
