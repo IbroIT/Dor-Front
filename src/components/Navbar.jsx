@@ -17,7 +17,6 @@ const Navbar = () => {
     },
     {
       title: 'Рынки',
-      path: '/markets',
       icon: '🏪',
       subItems: [
         { title: 'Рынок «Дордой»', path: '/markets/dordoi', website: 'https://www.exportasia.ru/'},
