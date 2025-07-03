@@ -28,9 +28,11 @@ import ThankLetters from './pages/partners/ThankLetters';
 
 // Новости
 import News from './pages/news/News';
-import MarketNews from './pages/news/MarketNews';
+import NewsCategory from './pages/news/NewsCategory';
 import PressReleases from './pages/news/PressReleases';
 import NewsArchive from './pages/news/NewsArchive';
+import NewsDetail from './pages/news/NewsDetail';
+
 
 // Образование
 import Education from './pages/education/Education';
@@ -84,9 +86,10 @@ function App() {
   
   {/* Новости */}
   <Route path="/news" element={<News />} />
-  <Route path="/news/market-news" element={<MarketNews />} />
+  <Route path="category/:slug" element={<NewsCategory />} />
   <Route path="/news/press" element={<PressReleases />} />
   <Route path="/news/archive" element={<NewsArchive />} />
+  <Route path=":slug" element={<NewsDetail />} />
   
   {/* Образование */}
   <Route path="/education" element={<Education />} />
