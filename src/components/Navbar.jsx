@@ -77,9 +77,7 @@ const Navbar = () => {
       subItems: [
         { title: 'Центральный офис', path: '/contacts/office' },
         { title: 'Адреса рынков и ТЦ', path: '/contacts/addresses' },
-        { title: 'Телефоны и email', path: '/contacts/phones' },
-        { title: 'Онлайн-форма связи', path: '/contacts/form' },
-        { title: 'Карта проезда', path: '/contacts/map' },
+        { title: 'Телефоны и email', path: '/contacts/phones' }
       ],
     },
   ];
