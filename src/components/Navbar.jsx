@@ -31,10 +31,10 @@ const Navbar = () => {
       path: '/partners',
       icon: '🤝',
       subItems: [
-        { title: 'Текущие партнёры', path: '../pages/partners/CurrentPartners' },
-        { title: 'Международные проекты', path: '../pages/partners/InternationalProjects' },
-        { title: 'Партнёрство и сотрудничество', path: '../pages/partners/Cooperation' },
-        { title: 'Благодарственные письма', path: '../pages/partners/ThankLetters' },
+        { title: 'Текущие партнёры', path: '/pages/partners/CurrentPartners' },
+        { title: 'Международные проекты', path: '/pages/partners/InternationalProjects' },
+        { title: 'Партнёрство и сотрудничество', path: '/pages/partners/Cooperation' },
+        { title: 'Благодарственные письма', path: '/pages/partners/ThankLetters' },
       ],
     },
     {
@@ -42,9 +42,9 @@ const Navbar = () => {
       path: '/news',
       icon: '📰',
       subItems: [
-        { title: 'Новости рынков', path: '../pages/news/News' },
-        { title: 'Пресс-релизы', path: '../pages/news/Press' },
-        { title: 'Архив', path: '../pages/news/Archive' },
+        { title: 'Новости рынков', path: '/pages/news/News' },
+        { title: 'Пресс-релизы', path: '/pages/news/Press' },
+        { title: 'Архив', path: '/pages/news/Archive' },
       ],
     },
     {
