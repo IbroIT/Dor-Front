@@ -17,7 +17,6 @@ const Navbar = () => {
     },
     {
       title: 'Рынки',
-      path: '/markets',
       icon: '🏪',
       subItems: [
         { title: 'Рынок «Дордой»', path: '/markets/dordoi', website: 'https://www.exportasia.ru/'},
@@ -60,7 +59,6 @@ const Navbar = () => {
     },
     {
       title: 'Документы',
-      path: '/documents',
       icon: '📂',
       subItems: [
         { title: 'Устав и внутренние положения', path: '/documents/statute' },
