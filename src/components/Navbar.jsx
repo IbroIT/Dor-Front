@@ -20,14 +20,11 @@ const Navbar = () => {
       path: '/markets',
       icon: '🏪',
       subItems: [
-        { title: 'Рынок «Дордой»', path: '/markets/dordoi' },
+        { title: 'Рынок «Дордой»', path: '/markets/dordoi', website: 'https://www.exportasia.ru/'},
         { title: 'Рынок "Аламедин"', path: '/markets/alamedin' },
         { title: 'Рынок "Дордой Моторс"', path: '/markets/dordoi-motors' },
-        { title: 'Рынок «Мадина»', path: '/markets/madina' },
-        { title: 'ТЦ «Dordoi Plaza»', path: '/markets/dordoi-plaza' },
-        { title: 'Условия аренды', path: '/markets/rent' },
-        { title: 'Интерактивная карта', path: '/markets/map' },
-        { title: 'Часто задаваемые вопросы', path: '/markets/faq' },
+        { title: 'Рынок «Мадина»', path: '/markets/madina', website: 'https://www.exportasia.ru/%D0%BC%D0%B0%D0%B3%D0%B0%D0%B7%D0%B8%D0%BD%D1%8B/%D0%BC%D0%B0%D0%B4%D0%B8%D0%BD%D0%B0' },
+        { title: 'ТЦ «Dordoi Plaza»', path: '/markets/dordoi-plaza' , website:'https://dordoiplaza.kg/'},
       ],
     },
     {
@@ -35,10 +32,10 @@ const Navbar = () => {
       path: '/partners',
       icon: '🤝',
       subItems: [
-        { title: 'Текущие партнёры', path: '/partners/current' },
-        { title: 'Международные проекты', path: '/partners/international' },
-        { title: 'Партнёрство и сотрудничество', path: '/partners/cooperation' },
-        { title: 'Благодарственные письма', path: '/partners/letters' },
+        { title: 'Текущие партнёры', path: '../partners/current' },
+        { title: 'Международные проекты', path: '../partners/international' },
+        { title: 'Партнёрство и сотрудничество', path: '../partners/cooperation' },
+        { title: 'Благодарственные письма', path: '../partners/letters' },
       ],
     },
     {
@@ -46,9 +43,9 @@ const Navbar = () => {
       path: '/news',
       icon: '📰',
       subItems: [
-        { title: 'Новости рынков', path: '/news/market-news' },
-        { title: 'Пресс-релизы', path: '/news/press' },
-        { title: 'Архив', path: '/news/archive' },
+        { title: 'Новости рынков', path: '../news' },
+        { title: 'Пресс-релизы', path: '../news/press' },
+        { title: 'Архив', path: '../news/archive' },
       ],
     },
     {
@@ -167,17 +164,30 @@ const Navbar = () => {
                       className={`absolute left-0 mt-0 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 p-1 ${activeSubmenu === index ? 'block' : 'hidden'} group-hover:block hover:block`}
                     >
                       <div className="py-1">
-                        {item.subItems.map((subItem, subIndex) => (
-                          <Link
-                            key={subIndex}
-                            to={subItem.path}
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-md"
-                            onClick={closeAllMenus}
-                          >
-                            {subItem.title}
-                          </Link>
-                        ))}
+                          {item.subItems.map((subItem, subIndex) =>
+                            subItem.website ? (
+                              <a
+                                key={subIndex}
+                                href={subItem.website}
+                                rel="noopener noreferrer"
+                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-md"
+                                onClick={closeAllMenus}
+                              >
+                                {subItem.title}
+                              </a>
+                            ) : (
+                              <Link
+                                key={subIndex}
+                                to={subItem.path}
+                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-md"
+                                onClick={closeAllMenus}
+                              >
+                                {subItem.title}
+                              </Link>
+                            )
+                          )}
                       </div>
+
                     </div>
                   </div>
                 ) : (

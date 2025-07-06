@@ -173,7 +173,7 @@ const DordoiAssociation = () => {
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-white to-blue-200">Ассоциация</span>
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-500 mt-2">«Дордой»</span>
               </h1>
-              <p className="text-xl md:text-2xl text-blue-200 max-w-2xl leading-relaxed">
+              <p className="text-xl md:text-2xl text-blue-100 max-w-2xl leading-relaxed">
                 Лидер бизнес-сообщества Кыргызстана, объединяющий предпринимателей для создания устойчивой экономики будущего
               </p>
             </div>
@@ -192,7 +192,7 @@ const DordoiAssociation = () => {
                 >
                   <div className="text-4xl mb-3">{stat.icon}</div>
                   <div className="text-3xl font-bold text-yellow-400">{stat.value}</div>
-                  <div className="text-sm text-blue-200 mt-1">{stat.label}</div>
+                  <div className="text-sm text-blue-100 mt-1">{stat.label}</div>
                 </motion.div>
               ))}
             </motion.div>
@@ -212,7 +212,7 @@ const DordoiAssociation = () => {
               <h2 className="text-4xl md:text-5xl font-bold mb-6">
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-500">Руководство</span>
               </h2>
-              <p className="text-xl text-blue-200 max-w-3xl mx-auto leading-relaxed">
+              <p className="text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
                 Профессиональная команда лидеров, определяющих развитие бизнес-сообщества и экономики страны
               </p>
             </motion.div>
@@ -256,7 +256,7 @@ const DordoiAssociation = () => {
                       whileInView={{ opacity: 1 }}
                       transition={{ delay: 0.4 }}
                     >
-                      <p className="text-blue-200 mb-4 leading-relaxed">{leader.role}</p>
+                      <p className="text-blue-100 mb-4 leading-relaxed">{leader.role}</p>
                       <div className="border-t border-blue-800/50 pt-4">
                         <h5 className="text-sm font-semibold text-yellow-300 mb-2">Ключевые достижения:</h5>
                         <ul className="space-y-2">
@@ -270,7 +270,7 @@ const DordoiAssociation = () => {
                               <svg className="h-5 w-5 text-yellow-400 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                               </svg>
-                              <span className="text-blue-100 leading-snug">{achievement}</span>
+                              <span className="text-blue-50 leading-snug">{achievement}</span>
                             </motion.li>
                           ))}
                         </ul>
@@ -296,7 +296,7 @@ const DordoiAssociation = () => {
               <h2 className="text-4xl md:text-5xl font-bold mb-6">
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-500">Ключевые проекты</span>
               </h2>
-              <p className="text-xl text-blue-200 max-w-3xl mx-auto leading-relaxed">
+              <p className="text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
                 Инновационные инициативы, меняющие бизнес-ландшафт страны и создающие новые возможности
               </p>
             </motion.div>
@@ -342,12 +342,12 @@ const DordoiAssociation = () => {
                       whileInView={{ opacity: 1 }}
                       transition={{ delay: 0.4 }}
                     >
-                      <p className="text-blue-200 mb-4 leading-relaxed">{project.description}</p>
+                      <p className="text-blue-100 mb-4 leading-relaxed">{project.description}</p>
                       <div className="flex flex-wrap gap-2 mb-4">
                         {project.stats.map((stat, idx) => (
                           <motion.span 
                             key={idx} 
-                            className="bg-blue-800/50 text-blue-100 text-xs px-3 py-1 rounded-full"
+                            className="bg-blue-800/50 text-blue-50 text-xs px-3 py-1 rounded-full"
                             whileHover={{ scale: 1.05 }}
                           >
                             {stat}
@@ -384,7 +384,7 @@ const DordoiAssociation = () => {
               <h2 className="text-4xl md:text-5xl font-bold mb-6">
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-500">Галерея</span>
               </h2>
-              <p className="text-xl text-blue-200 max-w-3xl mx-auto leading-relaxed">
+              <p className="text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
                 Визуальная история нашей деятельности и достижений
               </p>
             </motion.div>

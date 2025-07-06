@@ -3,7 +3,6 @@ import Home from "./pages/Home";
 import Navbar from "./components/Navbar";
 
 // О нас
-import About from './pages/about/About';
 import History from './pages/about/History';
 import Mission from './pages/about/Mission';
 import Leadership from './pages/about/Leadership';
@@ -27,10 +26,10 @@ import Cooperation from './pages/partners/Cooperation';
 import ThankLetters from './pages/partners/ThankLetters';
 
 // Новости
-import News from './pages/news/News';
-import MarketNews from './pages/news/MarketNews';
+import NewsCategory from './pages/news/NewsCategory';
 import PressReleases from './pages/news/PressReleases';
 import NewsArchive from './pages/news/NewsArchive';
+
 
 // Образование
 import Education from './pages/University';
@@ -59,7 +58,6 @@ function App() {
   <Route path="/" element={<Home />} />
   
   {/* О нас */}
-  <Route path="/about" element={<About />} />
   <Route path="/about/history" element={<History />} />
   <Route path="/about/mission" element={<Mission />} />
   <Route path="/about/leadership" element={<Leadership />} />
@@ -67,13 +65,8 @@ function App() {
   
   {/* Рынки */}
   <Route path="/markets" element={<Markets />} />
-  <Route path="/markets/dordoi" element={<DordoiMarket />} />
   <Route path="/markets/alamedin" element={<AlamedinMarket />} />
   <Route path="/markets/dordoi-motors" element={<DordoiMotors />} />
-  <Route path="/markets/madina" element={<MadinaMarket />} />
-  <Route path="/markets/dordoi-plaza" element={<DordoiPlaza />} />
-  <Route path="/markets/rent" element={<RentConditions />} />
-  <Route path="/markets/faq" element={<MarketFAQ />} />
   
   {/* Партнёры */}
   <Route path="/partners" element={<Partners />} />
@@ -83,8 +76,7 @@ function App() {
   <Route path="/partners/letters" element={<ThankLetters />} />
   
   {/* Новости */}
-  <Route path="/news" element={<News />} />
-  <Route path="/news/market-news" element={<MarketNews />} />
+  <Route path="/news" element={<NewsCategory />} />
   <Route path="/news/press" element={<PressReleases />} />
   <Route path="/news/archive" element={<NewsArchive />} />
   
