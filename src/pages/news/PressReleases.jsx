@@ -15,27 +15,32 @@ const PressReleases = () => {
 
   // Загрузка данных с бэкенда
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsLoading(true);
-        
-        // Загружаем все пресс-релизы
-        const releasesResponse = await axios.get('http://localhost:8000/api/press-releases/');
-        setPressReleases(releasesResponse.data);
-        
-        // Загружаем популярные релизы
-        const popularResponse = await axios.get('http://localhost:8000/api/press-releases/popular/');
-        setPopularReleases(popularResponse.data);
-        
-      } catch (error) {
-        console.error('Error fetching press releases:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const fetchData = async () => {
+  try {
+    setIsLoading(true);
+    
+    // Загружаем все пресс-релизы
+    const releasesResponse = await axios.get(
+      'https://dor-back.onrender.com/api/press-releases/'
+    );
+    setPressReleases(releasesResponse.data);
+    
+    // Загружаем популярные релизы
+    const popularResponse = await axios.get(
+      'https://dor-back.onrender.com/api/press-releases/popular/'
+    );
+    setPopularReleases(popularResponse.data);
+    
+  } catch (error) {
+    console.error('Error fetching press releases:', error);
+    // Можно добавить уведомление пользователю об ошибке
+  } finally {
+    setIsLoading(false);
+  }
+};
 
-    fetchData();
-  }, []);
+  fetchData();
+}, []);
 
   // Эффект для отслеживания прокрутки
   useEffect(() => {

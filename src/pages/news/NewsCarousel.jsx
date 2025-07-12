@@ -9,19 +9,26 @@ const NewsCarousel = () => {
   const [loading, setLoading] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  useEffect(() => {
-    const fetchFeaturedNews = async () => {
-      try {
-        const response = await axios.get('http://localhost:8000/api/news/featured/');
-        setFeaturedNews(response.data);
-      } catch (error) {
-        console.error('Error fetching news:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      
+      // Загружаем featured новости
+      const featuredResponse = await axios.get(
+        'https://dor-back.onrender.com/api/news/featured/'
+      );
+      setFeaturedNews(featuredResponse.data);
+      
+    } catch (error) {
+      console.error('Error fetching news:', error);
+      // Можно добавить уведомление пользователю об ошибке
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchFeaturedNews();
+  useEffect(() => {
+    fetchData();
   }, []);
 
   const settings = {
@@ -80,7 +87,7 @@ const NewsCarousel = () => {
             <div 
               className="absolute inset-0 bg-cover bg-center transform scale-110 transition-transform duration-10000 ease-out"
               style={{ 
-                backgroundImage: `url(${news.image})`,
+                backgroundImage: `url(${news.image || '/default-news-image.jpg'})`,
                 transform: index === currentSlide ? 'scale(1)' : 'scale(1.1)'
               }}
             >

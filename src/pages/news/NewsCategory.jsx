@@ -9,15 +9,22 @@ const News = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedNews, setSelectedNews] = useState(null);
-  const [visibleNews, setVisibleNews] = useState(6); // Количество отображаемых новостей
+  const [visibleNews, setVisibleNews] = useState(6);
 
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const [featuredResponse, allNewsResponse] = await Promise.all([
-          axios.get('http://localhost:8000/api/news/featured/'),
-          axios.get('http://localhost:8000/api/news/')
-        ]);
+        setLoading(true);
+        
+        // Загружаем featured новости
+        const featuredResponse = await axios.get(
+          'https://dor-back.onrender.com/api/news/featured/'
+        );
+        
+        // Загружаем все новости
+        const allNewsResponse = await axios.get(
+          'https://dor-back.onrender.com/api/news/'
+        );
         
         setFeaturedNews(featuredResponse.data);
         setAllNews(allNewsResponse.data);
@@ -37,12 +44,12 @@ const News = () => {
 
   const openModal = (news) => {
     setSelectedNews(news);
-    document.body.style.overflow = 'hidden'; // Блокируем скролл страницы
+    document.body.style.overflow = 'hidden';
   };
 
   const closeModal = () => {
     setSelectedNews(null);
-    document.body.style.overflow = 'auto'; // Восстанавливаем скролл
+    document.body.style.overflow = 'auto';
   };
 
   if (loading) return (
@@ -88,7 +95,7 @@ const News = () => {
 
   return (
     <div className="bg-gradient-to-br from-blue-50 via-white to-blue-50 min-h-screen">
-      <div className="container mx-auto px-4 ">
+      <div className="container mx-auto px-4">
         {/* Карусель с главными новостями */}
         <NewsCarousel news={featuredNews} openModal={openModal} />
         
@@ -126,11 +133,14 @@ const News = () => {
               >
                 <div className="relative overflow-hidden h-64">
                   <motion.img 
-                    src={news.image} 
+                    src={news.image || '/default-news.jpg'} 
                     alt={news.title}
                     className="w-full h-full object-cover"
                     whileHover={{ scale: 1.1 }}
                     transition={{ duration: 0.5 }}
+                    onError={(e) => {
+                      e.target.src = '/default-news.jpg';
+                    }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-blue-900/80 via-transparent to-transparent p-4 flex flex-col justify-end">
                     <span className="text-white text-sm bg-blue-600/90 px-3 py-1 rounded-full inline-block self-start">
@@ -200,9 +210,12 @@ const News = () => {
               <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-2xl flex flex-col">
                 <div className="relative h-64 md:h-80 bg-blue-50 overflow-hidden">
                   <img 
-                    src={selectedNews.image} 
+                    src={selectedNews.image || '/default-news.jpg'} 
                     alt={selectedNews.title}
                     className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.target.src = '/default-news.jpg';
+                    }}
                   />
                   <button 
                     onClick={closeModal}
