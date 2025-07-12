@@ -46,14 +46,14 @@ export const HistoryTwo = () => {
     { year: 2023, event: "Вхождение в топ-10 мировых рынков" }
   ];
 
-  const partners = [
-    { name: "Китай", flag: "🇨🇳", volume: "35%" },
-    { name: "Россия", flag: "🇷🇺", volume: "25%" },
-    { name: "Турция", flag: "🇹🇷", volume: "15%" },
-    { name: "Казахстан", flag: "🇰🇿", volume: "10%" },
-    { name: "Европа", flag: "🇪🇺", volume: "10%" },
-    { name: "США", flag: "🇺🇸", volume: "5%" }
-  ];
+const partners = [
+    { name: "Китай", flag: "fi fi-cn", volume: "35%" },
+    { name: "Россия", flag: "fi fi-ru", volume: "25%" },
+    { name: "Турция", flag: "fi fi-tr", volume: "15%" },
+    { name: "Казахстан", flag: "fi fi-kz", volume: "10%" },
+    { name: "Европа", flag: "fi fi-eu", volume: "10%" },
+    { name: "США", flag: "fi fi-us", volume: "5%" }
+];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 text-white overflow-hidden">
@@ -154,13 +154,13 @@ export const HistoryTwo = () => {
             <div className="inline-flex bg-blue-900 rounded-full p-1 border border-blue-700">
               <button
                 onClick={() => setActiveTab('economic')}
-                className={`px-6 py-2 rounded-full transition-all ${activeTab === 'economic' ? 'bg-yellow-500 text-blue-900 font-bold' : 'text-blue-200'}`}
+                className={`px-6 py-2 rounded-full transition-all ${activeTab === 'economic' ? 'bg-yellow-500 text-blue-900 font-bold' : 'text-white'}`}
               >
                 Экономика
               </button>
               <button
                 onClick={() => setActiveTab('social')}
-                className={`px-6 py-2 rounded-full transition-all ${activeTab === 'social' ? 'bg-yellow-500 text-blue-900 font-bold' : 'text-blue-200'}`}
+                className={`px-6 py-2 rounded-full transition-all ${activeTab === 'social' ? 'bg-yellow-500 text-blue-900 font-bold' : 'text-white'}`}
               >
                 Социум
               </button>
@@ -184,7 +184,7 @@ export const HistoryTwo = () => {
                 >
                   <div className="text-3xl mb-3">{stat.icon}</div>
                   <div className="text-2xl md:text-3xl font-bold text-yellow-400 mb-1">{stat.value}</div>
-                  <div className="text-sm md:text-base text-blue-200">{stat.label}</div>
+                  <div className="text-sm md:text-base text-white">{stat.label}</div>
                 </motion.div>
               ))}
             </motion.div>
@@ -239,52 +239,53 @@ export const HistoryTwo = () => {
 
       {/* Partners Section */}
       <section className="relative z-10 py-16 bg-gradient-to-b from-blue-900/50 to-blue-800/50">
-        <div className="container mx-auto px-6">
-          <motion.h2 
+    <div className="container mx-auto px-6">
+        <motion.h2 
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             className="text-3xl md:text-4xl font-bold text-center mb-16"
-          >
+        >
             Международные <span className="text-yellow-400">партнёры</span>
-          </motion.h2>
+        </motion.h2>
 
-          <motion.div
+        <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-          >
+        >
             <Swiper
-              slidesPerView={2}
-              spaceBetween={20}
-              breakpoints={{
-                640: { slidesPerView: 3 },
-                1024: { slidesPerView: 6 }
-              }}
-              autoplay={{ delay: 2000, disableOnInteraction: false }}
-              loop={true}
-              modules={[Autoplay]}
-              className="mySwiper"
+                slidesPerView={2}
+                spaceBetween={20}
+                breakpoints={{
+                    640: { slidesPerView: 3 },
+                    1024: { slidesPerView: 6 }
+                }}
+                autoplay={{ delay: 2000, disableOnInteraction: false }}
+                loop={true}
+                modules={[Autoplay]}
+                className="mySwiper"
             >
-              {partners.map((partner, index) => (
-                <SwiperSlide key={index}>
-                  <motion.div 
-                    whileHover={{ scale: 1.05 }}
-                    className="bg-blue-900/50 backdrop-blur-sm p-6 rounded-xl border border-blue-700 text-center"
-                  >
-                    <div className="text-4xl mb-3">{partner.flag}</div>
-                    <div className="font-bold mb-1">{partner.name}</div>
-                    <div className="text-sm text-blue-300">{partner.volume} товарооборота</div>
-                  </motion.div>
-                </SwiperSlide>
-              ))}
+                {partners.map((partner, index) => (
+                    <SwiperSlide key={index}>
+                        <motion.div 
+                            whileHover={{ scale: 1.05 }}
+                            className="bg-blue-900/50 backdrop-blur-sm p-6 rounded-xl border border-blue-700 text-center"
+                        >
+                            <div className="mb-3">
+                                <span className={`${partner.flag} text-4xl`}></span>
+                            </div>
+                            <div className="font-bold mb-1">{partner.name}</div>
+                            <div className="text-sm text-blue-300">{partner.volume} товарооборота</div>
+                        </motion.div>
+                    </SwiperSlide>
+                ))}
             </Swiper>
-          </motion.div>
-        </div>
-      </section>
-
+        </motion.div>
+    </div>
+</section>
       {/* Production Section */}
       <section className="relative z-10 py-16">
         <div className="container mx-auto px-6">
@@ -305,7 +306,7 @@ export const HistoryTwo = () => {
                   <div className="text-yellow-400 text-2xl mr-4">✓</div>
                   <div>
                     <h3 className="font-bold text-lg">Мебельная продукция</h3>
-                    <p className="text-blue-200">Высококачественная мебель по международным стандартам</p>
+                    <p className="text-white">Высококачественная мебель по международным стандартам</p>
                   </div>
                 </div>
                 
@@ -313,7 +314,7 @@ export const HistoryTwo = () => {
                   <div className="text-yellow-400 text-2xl mr-4">✓</div>
                   <div>
                     <h3 className="font-bold text-lg">Джуто-кенафные изделия</h3>
-                    <p className="text-blue-200">Экологичная упаковка и текстильные материалы</p>
+                    <p className="text-white">Экологичная упаковка и текстильные материалы</p>
                   </div>
                 </div>
                 
@@ -321,7 +322,7 @@ export const HistoryTwo = () => {
                   <div className="text-yellow-400 text-2xl mr-4">✓</div>
                   <div>
                     <h3 className="font-bold text-lg">Пластик и алюминий</h3>
-                    <p className="text-blue-200">Современные изделия для строительства и промышленности</p>
+                    <p className="text-white">Современные изделия для строительства и промышленности</p>
                   </div>
                 </div>
                 
@@ -329,7 +330,7 @@ export const HistoryTwo = () => {
                   <div className="text-yellow-400 text-2xl mr-4">✓</div>
                   <div>
                     <h3 className="font-bold text-lg">Карго-доставка</h3>
-                    <p className="text-blue-200">Эффективная логистика в крупные города России и СНГ</p>
+                    <p className="text-white">Эффективная логистика в крупные города России и СНГ</p>
                   </div>
                 </div>
               </div>
@@ -350,7 +351,7 @@ export const HistoryTwo = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-blue-900/80 to-transparent"></div>
                 <div className="absolute bottom-0 left-0 p-6">
                   <div className="text-xl font-bold">Дордой - это не только торговля</div>
-                  <div className="text-blue-200">Но и мощное производство</div>
+                  <div className="text-white">Но и мощное производство</div>
                 </div>
               </div>
             </motion.div>
@@ -381,7 +382,7 @@ export const HistoryTwo = () => {
             >
               <div className="text-yellow-400 text-4xl mb-4">🎓</div>
               <h3 className="text-xl font-bold mb-3">Образование</h3>
-              <p className="text-blue-200">Стипендии, издание книг, поддержка науки и археологических экспедиций</p>
+              <p className="text-white">Стипендии, издание книг, поддержка науки и археологических экспедиций</p>
             </motion.div>
             
             <motion.div
@@ -393,7 +394,7 @@ export const HistoryTwo = () => {
             >
               <div className="text-yellow-400 text-4xl mb-4">⚽</div>
               <h3 className="text-xl font-bold mb-3">Спорт</h3>
-              <p className="text-blue-200">13-кратный чемпион по футболу, 5-кратный по хоккею, поддержка команд</p>
+              <p className="text-white">13-кратный чемпион по футболу, 5-кратный по хоккею, поддержка команд</p>
             </motion.div>
             
             <motion.div
@@ -405,7 +406,7 @@ export const HistoryTwo = () => {
             >
               <div className="text-yellow-400 text-4xl mb-4">🕌</div>
               <h3 className="text-xl font-bold mb-3">Религия</h3>
-              <p className="text-blue-200">Строительство мечетей и медресе</p>
+              <p className="text-white">Строительство мечетей и медресе</p>
             </motion.div>
             
             <motion.div
@@ -417,7 +418,7 @@ export const HistoryTwo = () => {
             >
               <div className="text-yellow-400 text-4xl mb-4">❤️</div>
               <h3 className="text-xl font-bold mb-3">Кризисная помощь</h3>
-              <p className="text-blue-200">Помощь во время пандемии, стационары, восстановление приграничья</p>
+              <p className="text-white">Помощь во время пандемии, стационары, восстановление приграничья</p>
             </motion.div>
           </div>
         </div>

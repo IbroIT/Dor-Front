@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock, FaPaperPlane, FaBuilding, FaUsers, FaHeadset } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
-// import { YMaps, Map, Placemark } from '@pbe/react-yandex-maps';
+import { YMaps, Map, Placemark } from '@pbe/react-yandex-maps';
 
 const ContactsPage = () => {
   const [isLoading, setIsLoading] = useState(true);

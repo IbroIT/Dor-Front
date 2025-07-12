@@ -454,15 +454,7 @@ const Cooperation = () => {
             <h2 className="text-xl font-semibold text-gray-800">
               Найдено <span className="text-blue-600">{filteredCooperations.length}</span> соглашений
             </h2>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={handleAddNew}
-              className="px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg shadow-md flex items-center"
-            >
-              <FiPlus className="mr-2" />
-              Добавить соглашение
-            </motion.button>
+            
           </div>
 
           {filteredCooperations.length > 0 ? (

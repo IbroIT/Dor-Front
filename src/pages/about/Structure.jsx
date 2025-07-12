@@ -499,89 +499,99 @@ const DordoyAssociation = () => {
 
       {/* International Section */}
       <motion.section 
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16"
+  initial={{ opacity: 0 }}
+  whileInView={{ opacity: 1 }}
+  transition={{ duration: 0.8 }}
+  viewport={{ once: true }}
+  className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16"
+>
+  <div className="flex flex-col md:flex-row items-center">
+    <motion.div 
+      initial="hidden"
+      animate="visible"
+      variants={staggerContainer}
+      className="md:w-1/2 mb-10 md:mb-0"
+    >
+      <motion.h2 
+        variants={fadeIn}
+        className="text-3xl md:text-4xl font-bold text-blue-900 mb-6"
       >
-        <div className="flex flex-col md:flex-row items-center">
+        Международное сотрудничество
+      </motion.h2>
+      <motion.div 
+        variants={fadeIn}
+        className="w-24 h-1 bg-yellow-500 mb-6"
+      ></motion.div>
+      <motion.p 
+        variants={fadeIn}
+        className="text-lg text-gray-700 mb-8"
+      >
+        Ассоциация «Дордой» развивает партнерские отношения с компаниями из стран СНГ, Европы, Азии и США, что способствует обмену опытом и технологиями.
+      </motion.p>
+      <div className="grid grid-cols-2 gap-4">
+        {[
+          { label: 'Экспортные поставки', value: '15 стран' },
+          { label: 'Иностранные партнеры', value: '200+ компаний' },
+          { label: 'Международные сертификаты', value: '50+' },
+          { label: 'Совместные предприятия', value: '12' }
+        ].map((item, i) => (
           <motion.div 
-            initial="hidden"
-            animate="visible"
-            variants={staggerContainer}
-            className="md:w-1/2 mb-10 md:mb-0"
+            key={i}
+            variants={fadeIn}
+            whileHover={{ y: -3 }}
+            className="bg-blue-50 p-4 rounded-lg"
           >
-            <motion.h2 
-              variants={fadeIn}
-              className="text-3xl md:text-4xl font-bold text-blue-900 mb-6"
-            >
-              Международное сотрудничество
-            </motion.h2>
+            <p className="text-sm text-gray-600">{item.label}</p>
+            <p className="text-xl font-bold text-blue-900">{item.value}</p>
+          </motion.div>
+        ))}
+      </div>
+    </motion.div>
+    
+    <motion.div 
+      initial={{ opacity: 0, scale: 0.8 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5 }}
+      viewport={{ once: true }}
+      className="md:w-1/2 flex justify-center"
+    >
+      <div className="relative">
+        <div className="grid grid-cols-3 gap-4">
+          {[
+            { code: 'kg', name: 'Кыргызстан' },
+            { code: 'ru', name: 'Россия' },
+            { code: 'kz', name: 'Казахстан' },
+            { code: 'cn', name: 'Китай' },
+            { code: 'tr', name: 'Турция' },
+            { code: 'us', name: 'США' },
+            { code: 'de', name: 'Германия' },
+            { code: 'kr', name: 'Корея' },
+            { code: 'ae', name: 'ОАЭ' }
+          ].map((country, i) => (
             <motion.div 
-              variants={fadeIn}
-              className="w-24 h-1 bg-yellow-500 mb-6"
-            ></motion.div>
-            <motion.p 
-              variants={fadeIn}
-              className="text-lg text-gray-700 mb-8"
+              key={i}
+              whileHover={{ scale: 1.1, rotate: [0, -5, 5, -5, 5, 0] }}
+              transition={{ duration: 0.5 }}
+              className="flex items-center justify-center bg-white shadow-md p-4 rounded-xl cursor-pointer"
+              title={country.name}
             >
-              Ассоциация «Дордой» развивает партнерские отношения с компаниями из стран СНГ, Европы, Азии и США, что способствует обмену опытом и технологиями.
-            </motion.p>
-            <div className="grid grid-cols-2 gap-4">
-              {[
-                { label: 'Экспортные поставки', value: '15 стран' },
-                { label: 'Иностранные партнеры', value: '200+ компаний' },
-                { label: 'Международные сертификаты', value: '50+' },
-                { label: 'Совместные предприятия', value: '12' }
-              ].map((item, i) => (
-                <motion.div 
-                  key={i}
-                  variants={fadeIn}
-                  whileHover={{ y: -3 }}
-                  className="bg-blue-50 p-4 rounded-lg"
-                >
-                  <p className="text-sm text-gray-600">{item.label}</p>
-                  <p className="text-xl font-bold text-blue-900">{item.value}</p>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-          
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="md:w-1/2 flex justify-center"
-          >
-            <div className="relative">
-              <div className="grid grid-cols-3 gap-4">
-                {['🇰🇬', '🇷🇺', '🇰🇿', '🇨🇳', '🇹🇷', '🇺🇸', '🇩🇪', '🇰🇷', '🇦🇪'].map((flag, i) => (
-                  <motion.div 
-                    key={i}
-                    whileHover={{ scale: 1.1, rotate: [0, -5, 5, -5, 5, 0] }}
-                    transition={{ duration: 0.5 }}
-                    className="text-5xl bg-white shadow-md p-4 rounded-xl cursor-pointer"
-                    title={['Кыргызстан', 'Россия', 'Казахстан', 'Китай', 'Турция', 'США', 'Германия', 'Корея', 'ОАЭ'][i]}
-                  >
-                    {flag}
-                  </motion.div>
-                ))}
-              </div>
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.5 }}
-                viewport={{ once: true }}
-                className="absolute -bottom-6 -right-6 bg-yellow-400 text-blue-900 px-4 py-2 rounded-full font-bold text-sm shadow-lg"
-              >
-                Глобальные партнеры
-              </motion.div>
-            </div>
-          </motion.div>
+              <span className={`fi fi-${country.code} text-4xl`}></span>
+            </motion.div>
+          ))}
         </div>
-      </motion.section>
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+          viewport={{ once: true }}
+          className="absolute -bottom-6 -right-6 bg-yellow-400 text-blue-900 px-4 py-2 rounded-full font-bold text-sm shadow-lg"
+        >
+          Глобальные партнеры
+        </motion.div>
+      </div>
+    </motion.div>
+  </div>
+</motion.section>
 
       {/* Social Responsibility */}
       <motion.section 
@@ -614,7 +624,7 @@ const DordoyAssociation = () => {
               whileInView={{ opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.8 }}
               viewport={{ once: true }}
-              className="text-lg text-blue-200 max-w-3xl mx-auto"
+              className="text-lg text-white max-w-3xl mx-auto"
             >
               Ассоциация активно участвует в социальных и благотворительных проектах, поддерживая образование, спорт и здравоохранение в Кыргызстане
             </motion.p>

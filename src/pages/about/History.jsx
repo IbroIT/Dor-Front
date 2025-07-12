@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaGlobe, FaTrophy, FaUsers, FaChartLine, FaFutbol, FaLightbulb, FaHandshake } from 'react-icons/fa';
 import { GiTrade, GiGrowth, GiThreeFriends } from 'react-icons/gi';
@@ -198,7 +198,7 @@ const eras = [
     description: "Аскар Салымбеков закладывает фундамент будущей империи в эпоху экономических перемен",
     fullDescription: "В 1991 году, после распада СССР, Аскар Салымбеков основал торговое объединение 'Дордой' в Бишкеке. В условиях экономического кризиса и переходного периода это стало смелым предпринимательским шагом. Первые годы были посвящены созданию инфраструктуры, налаживанию связей с местными производителями и формированию команды. Несмотря на сложности, уже к 1995 году объединение стало значимым игроком на местном рынке, объединив десятки предпринимателей.",
     icon: <GiTrade className="text-4xl" />,
-    image: "/dordoy-era1.jpg",
+    image: "https://www.open.kg/uploads/posts/2015-04/1429450409_vhod-na-dordoj.jpg",
     stats: [
       { value: "1991", label: "Год основания" },
       { value: "Бишкек", label: "Место создания" },
@@ -219,7 +219,7 @@ const eras = [
     description: "Трансформация в крупнейший торговый хаб Центральной Азии с международным влиянием",
     fullDescription: "Этот десятилетний период стал временем стремительного роста для ассоциации 'Дордой'. Были значительно расширены торговые площади, усовершенствована логистическая инфраструктура, установлены международные связи. Ассоциация стала ключевым экономическим игроком в регионе, способствуя развитию не только торговли, но и смежных отраслей. К 2005 году 'Дордой' превратился в настоящий торговый город со своей инфраструктурой и сервисами.",
     icon: <GiGrowth className="text-4xl" />,
-    image: "/dordoy-era2.jpg",
+    image: "https://kyrtag.kg/upload/iblock/1ed/1edc66782292a1aa311f5af89fd0ff32.jpg",
     stats: [
       { value: "1000+", label: "Предпринимателей" },
       { value: "5", label: "Стран-партнёров" },
@@ -240,7 +240,7 @@ const eras = [
     description: "Цифровизация процессов и выход на глобальные рынки с инновационными решениями",
     fullDescription: "В этот период ассоциация 'Дордой' сделала качественный скачок в своем развитии, внедрив современные технологии управления и логистики. Были автоматизированы ключевые бизнес-процессы, созданы электронные торговые площадки, внедрены системы электронного документооборота. Ассоциация начала активно участвовать в международных экономических форумах, завоевывая признание как одна из самых прогрессивных бизнес-структур региона. Особое внимание уделялось образовательным программам для предпринимателей.",
     icon: <FaLightbulb className="text-4xl" />,
-    image: "/dordoy-era3.jpg",
+    image: "https://dordoisecurity.kg/images/dp.jpg",
     stats: [
       { value: "15+", label: "Инвестпроектов" },
       { value: "100%", label: "Автоматизация учета" },
@@ -261,7 +261,7 @@ const eras = [
     description: "Стратегические партнёрства и формирование новой экономической экосистемы региона",
     fullDescription: "Современный этап развития ассоциации 'Дордой' характеризуется выходом на качественно новый уровень. Сегодня это не просто торговая площадка, а многофункциональный экономический кластер, включающий в себя торговые комплексы, логистические центры, производственные мощности и социальные объекты. Ассоциация активно участвует в государственных программах развития предпринимательства, поддерживает стартапы, инвестирует в инновационные проекты. Особое внимание уделяется устойчивому развитию и социальной ответственности бизнеса.",
     icon: <FaGlobe className="text-4xl" />,
-    image: "/dordoy-era4.jpg",
+    image: "https://avatars.mds.yandex.net/get-altay/6319069/2a0000017f976787c1c7068474d2aeb58660/orig",
     stats: [
       { value: "10,000+", label: "Рабочих мест" },
       { value: "12", label: "Стран партнеров" },
@@ -437,7 +437,38 @@ const AchievementCard = ({ achievement }) => {
 const ModernDordoyHistory = () => {
   const [currentYear] = useState(new Date().getFullYear());
   const [activeEra, setActiveEra] = useState(0);
-  
+  const intervalRef = useRef(null);
+
+  // Автоматическая смена эпох
+  useEffect(() => {
+    const startAutoChange = () => {
+      intervalRef.current = setInterval(() => {
+        setActiveEra(prev => (prev + 1) % eras.length);
+      }, 5000); // Меняем каждые 5 секунд
+    };
+
+    startAutoChange();
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, []);
+
+  // Сброс таймера при ручном изменении эпохи
+  const handleEraChange = (index) => {
+    setActiveEra(index);
+    // Сбрасываем таймер
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+    // Запускаем заново
+    intervalRef.current = setInterval(() => {
+      setActiveEra(prev => (prev + 1) % eras.length);
+    }, 5000);
+  };
+
   return (
     <div className="min-h-screen bg-gray-950 text-white overflow-x-hidden">
       {/* Hero Section */}
@@ -519,9 +550,9 @@ const ModernDordoyHistory = () => {
               <div className="relative">
                 <div className="relative z-10 w-full h-96 lg:h-[500px] rounded-2xl overflow-hidden border-2 border-yellow-400/30 shadow-2xl">
                   <img 
-                    src="/askar-salymbekov.jpg" 
+                    src="/img/swordman-partial.webp" 
                     alt="Аскар Салымбеков" 
-                    className="w-full h-full object-cover"
+                    className="pl-24 object-cover"
                   />
                 </div>
                 <div className="absolute -bottom-6 -right-6 bg-gradient-to-r from-yellow-500 to-amber-600 text-gray-900 py-3 px-8 rounded-full shadow-xl font-bold text-lg">
@@ -628,13 +659,19 @@ const ModernDordoyHistory = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 2, ease: "easeInOut" }}
               />
+              <motion.div
+                className="absolute top-0 left-0 h-full bg-yellow-400 rounded-full"
+                animate={{ width: "100%" }}
+                transition={{ duration: 5, ease: "linear" }}
+                key={activeEra}
+              />
             </div>
             
             <div className="flex justify-between max-w-4xl mx-auto mt-4">
               {eras.map((era, i) => (
                 <button
                   key={i}
-                  onClick={() => setActiveEra(i)}
+                  onClick={() => handleEraChange(i)}
                   className={`text-sm font-medium transition-colors ${activeEra === i ? 'text-yellow-400' : 'text-gray-500 hover:text-gray-300'}`}
                 >
                   {era.period}
@@ -643,19 +680,22 @@ const ModernDordoyHistory = () => {
             </div>
           </div>
           
-          <motion.div
-            key={activeEra}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="max-w-6xl mx-auto"
-          >
-            <EraCard 
-              era={eras[activeEra]} 
-              isActive={true}
-              onClick={() => setActiveEra((activeEra + 1) % eras.length)}
-            />
-          </motion.div>
+          <AnimatePresence mode='wait'>
+            <motion.div
+              key={activeEra}
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 50 }}
+              transition={{ duration: 0.5 }}
+              className="max-w-6xl mx-auto"
+            >
+              <EraCard 
+                era={eras[activeEra]} 
+                isActive={true}
+                onClick={() => handleEraChange((activeEra + 1) % eras.length)}
+              />
+            </motion.div>
+          </AnimatePresence>
         </div>
         
         <div className="absolute -top-20 right-0 w-64 h-64 rounded-full bg-purple-500/10 blur-3xl"></div>

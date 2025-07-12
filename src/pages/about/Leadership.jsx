@@ -149,7 +149,7 @@ const DordoiAssociation = () => {
       {/* Parallax Background */}
       <motion.div 
         style={{ y: yBg, opacity: opacityBg }}
-        className="absolute inset-0 bg-[url('/bg-pattern.jpg')] bg-cover bg-center opacity-10 z-0"
+        className=" inset-0 bg-[url('/bg-pattern.jpg')] bg-cover bg-center opacity-10 z-0"
       />
       
       {/* Main Content */}
@@ -391,37 +391,47 @@ const DordoiAssociation = () => {
 
             <div className="relative">
               <Swiper
-                modules={[Autoplay, EffectCreative]}
-                effect="creative"
-                creativeEffect={{
-                  prev: {
-                    shadow: true,
-                    translate: [0, 0, -400],
-                  },
-                  next: {
-                    translate: ["100%", 0, 0],
-                  },
-                }}
-                autoplay={{
-                  delay: 3000,
-                  disableOnInteraction: false,
-                }}
-                loop={true}
-                grabCursor={true}
-                className="h-96 w-full rounded-2xl overflow-hidden"
-              >
-                {[1, 2, 3, 4, 5].map((item) => (
-                  <SwiperSlide key={item}>
-                    <div className="w-full h-full bg-blue-800/50 flex items-center justify-center">
-                      <img 
-                        src={`/gallery/${item}.jpg`} 
-                        alt={`Gallery ${item}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  </SwiperSlide>
-                ))}
-              </Swiper>
+  modules={[Autoplay, EffectCreative]}
+  effect="creative"
+  creativeEffect={{
+    prev: {
+      shadow: true,
+      translate: [0, 0, -400],
+    },
+    next: {
+      translate: ["100%", 0, 0],
+    },
+  }}
+  autoplay={{
+    delay: 3000,
+    disableOnInteraction: false,
+  }}
+  loop={true}
+  grabCursor={true}
+  className="h-96 w-full rounded-2xl overflow-hidden"
+>
+  {[
+    "https://avatars.mds.yandex.net/get-altay/6319069/2a0000017f976787c1c7068474d2aeb58660/orig",
+    "https://lh4.googleusercontent.com/proxy/Q7WHq5aQ8tMTSc4fmWdrRhDsOJE9DYfhowVLlQFtN_8mtMqTj6xZo9YkervG-vT38lJYa_C-FS6cr5BySDAT2-EtF5H5fOIDKnb3i5cIqlLzZ-SRC4tNDyGP_iHL-cx6K6SEJ58",
+    "https://bestway.kg/wp-content/uploads/2023/09/drodoi.jpg",
+    "https://i.banks.kg/2857/dordoi.png",
+    "https://static.tildacdn.one/tild3065-3263-4164-b632-633734303466/DJI_0057_1.png"
+  ].map((imageUrl, index) => (
+    <SwiperSlide key={index}>
+      <div className="w-full h-full bg-blue-800/50 flex items-center justify-center">
+        <img 
+          src={imageUrl}
+          alt={`Gallery image ${index + 1}`}
+          className="w-full h-full object-cover"
+          onError={(e) => {
+            e.target.onerror = null; 
+            e.target.src = "/fallback-image.jpg"; // Путь к запасному изображению
+          }}
+        />
+      </div>
+    </SwiperSlide>
+  ))}
+</Swiper>
             </div>
           </div>
         </section>
