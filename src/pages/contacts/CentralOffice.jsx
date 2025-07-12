@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock, FaPaperPlane, FaBuilding, FaUsers, FaHeadset } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
-import { YMaps, Map, Placemark } from '@pbe/react-yandex-maps';
 
 const ContactsPage = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -143,44 +142,7 @@ const OfficeInfo = () => {
         animate={{ opacity: 1, x: 0 }}
         className="bg-white rounded-xl border border-blue-100 shadow-sm overflow-hidden"
       >
-        <div className="h-96">
-          <YMaps>
-            <Map
-              defaultState={{
-                center: officeCoordinates,
-                zoom: 15,
-                controls: ['zoomControl']
-              }}
-              width="100%"
-              height="100%"
-              modules={['control.ZoomControl']}
-            >
-              <Placemark 
-                geometry={officeCoordinates}
-                options={{
-                  iconLayout: 'default#image',
-                  iconImageHref: 'https://cdn-icons-png.flaticon.com/512/684/684908.png',
-                  iconImageSize: [40, 40],
-                  iconImageOffset: [-20, -40]
-                }}
-                properties={{
-                  hintContent: 'Центральный офис Dordoi Association',
-                  balloonContent: `
-                    <div style="padding: 10px;">
-                      <strong>Dordoi Association</strong><br/>
-                      пр. Чуй, 123, офис 501<br/>
-                      <a href="https://yandex.ru/maps/?pt=${officeCoordinates[1]},${officeCoordinates[0]}&z=15&l=map" 
-                         target="_blank" 
-                         style="color: #2563EB; text-decoration: underline;">
-                        Открыть в Яндекс.Картах
-                      </a>
-                    </div>
-                  `
-                }}
-              />
-            </Map>
-          </YMaps>
-        </div>
+        
         <div className="p-8">
           <h2 className="text-2xl font-semibold text-blue-900 mb-6">Контактная информация</h2>
           <div className="space-y-6">
